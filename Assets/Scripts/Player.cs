@@ -4,50 +4,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : NetworkBehaviour{
-
-    SyncList<string> playerMats = new SyncList<string>();
-    SyncList<string> taggedPlayerMats = new SyncList<string>();
-    [SyncVar] int index = 0;
     
-    Material thisPlayerMat;
+    public Material thisPlayerMat;
 
     public MeshRenderer meshRenderer;
     public Material taggedMaterial;
+    public Material untaggedMaterial;
+
+    int playerMaterialStringRequestCount = 0;
+
+    string[] playerMaterialStrings = {"Player1Untagged","Player2Untagged","Player3Untagged","Player4Untagged"}; 
+    string[] playerTaggedMaterialStrings = {"Player1Tagged","Player2Tagged","Player3Tagged","Player4Tagged"}; 
+    
+    string thisPlayerUntaggedMaterialString;
+    string thisPlayerTaggedMaterialString;
+
+
+    
 
 
     bool hasTag = false;
 
 
     public override void OnStartLocalPlayer()
-{
+    {
+        requestThisPlayerMaterialString();
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        thisPlayerMat = Resources.Load<Material>(thisPlayerUntaggedMaterialString);
+        meshRenderer.material = thisPlayerMat;
+        untaggedMaterial = meshRenderer.material;
+        taggedMaterial = Resources.Load<Material>(thisPlayerTaggedMaterialString);
+
+
         float randomPosX = (float)Random.Range(-15f, 15f);
         float randomPosZ = (float)Random.Range(-15f, 15f);
         transform.position = new Vector3(randomPosX,0,randomPosZ);
 
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        Camera.main.GetComponent<CameraFollow>().target=transform; //Fix camera on "me"
+  
 
-        playerMats.Add("Player1Untagged");
-        playerMats.Add("Player2Untagged");
-        playerMats.Add("Player3Untagged");
-        playerMats.Add("Player4Untagged");
-
-        taggedPlayerMats.Add("Player1Tagged");
-        taggedPlayerMats.Add("Player2Tagged");
-        taggedPlayerMats.Add("Player3Tagged");
-        taggedPlayerMats.Add("Player4Tagged");
-
-
-
-        
-
-    thisPlayerMat = (Material)Resources.Load(playerMats[index], typeof(Material));
-    
-    meshRenderer.material = thisPlayerMat; 
-    taggedMaterial = Resources.Load<Material>(taggedPlayerMats[index]);
-    Camera.main.GetComponent<CameraFollow>().target=transform; //Fix camera on "me"
-    index++;
-
-}
+    }
     void HandleMovement(){
         if(isLocalPlayer){
             float moveHorizontal = Input.GetAxis("Horizontal");
@@ -81,10 +77,21 @@ public class Player : NetworkBehaviour{
         hasTag = !hasTag;
     }
 
+    [Command]
+    void requestThisPlayerMaterialString(){
+        Debug.Log("Recieved playerMaterial request from client");
+        getThisPlayerMaterialString();
 
-    
 
+    }
 
+    [TargetRpc]
+    void getThisPlayerMaterialString(){
+        thisPlayerUntaggedMaterialString = playerMaterialStrings[playerMaterialStringRequestCount];
+        thisPlayerTaggedMaterialString = playerTaggedMaterialStrings[playerMaterialStringRequestCount];
 
+        playerMaterialStringRequestCount++;
+        Debug.Log("Recieved playerMaterial string from server");
+    }
 }
 

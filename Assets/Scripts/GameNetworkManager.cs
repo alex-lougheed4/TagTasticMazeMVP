@@ -1,12 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class MyNetworkManager : NetworkManager
+public class GameNetworkManager : NetworkManager
 {
-
-
     public override void OnStartServer()
     {
         Debug.Log("Server Started!");
