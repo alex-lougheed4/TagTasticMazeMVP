@@ -9,13 +9,14 @@ public class Player : NetworkBehaviour{
     SyncList<string> taggedPlayerMats = new SyncList<string>();
     [SyncVar] int index = 0;
     
-    string thisPlayerMat;
+    Material thisPlayerMat;
 
     public MeshRenderer meshRenderer;
     public Material taggedMaterial;
 
 
     bool hasTag = false;
+
 
     public override void OnStartLocalPlayer()
 {
@@ -24,7 +25,6 @@ public class Player : NetworkBehaviour{
         transform.position = new Vector3(randomPosX,0,randomPosZ);
 
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-
 
         playerMats.Add("Player1Untagged");
         playerMats.Add("Player2Untagged");
@@ -36,13 +36,16 @@ public class Player : NetworkBehaviour{
         taggedPlayerMats.Add("Player3Tagged");
         taggedPlayerMats.Add("Player4Tagged");
 
+
+
         
 
-    thisPlayerMat = playerMats[index];
-    index++;
-    meshRenderer.material = Resources.Load<Material>(thisPlayerMat); 
+    thisPlayerMat = (Material)Resources.Load(playerMats[index], typeof(Material));
+    
+    meshRenderer.material = thisPlayerMat; 
     taggedMaterial = Resources.Load<Material>(taggedPlayerMats[index]);
     Camera.main.GetComponent<CameraFollow>().target=transform; //Fix camera on "me"
+    index++;
 
 }
     void HandleMovement(){
