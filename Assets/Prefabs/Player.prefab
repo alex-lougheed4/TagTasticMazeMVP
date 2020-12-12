@@ -128,6 +128,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  meshRenderer: {fileID: 6020862298484921760}
+  newMaterial: {fileID: 2100000, guid: 97e15032b8773354f91e4ba2058a3fe5, type: 2}
 --- !u!114 &7941598322841823472
 MonoBehaviour:
   m_ObjectHideFlags: 0
