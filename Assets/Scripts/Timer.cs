@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 
 public class Timer : NetworkBehaviour
 {
-    public float timeRemaining = 10;
+    public Text timerLabel;
+    public float timeRemaining = 240;
     public bool timerIsRunning = false;
     
 
@@ -22,6 +24,9 @@ public class Timer : NetworkBehaviour
         {
             if (timeRemaining > 0)
             {
+                Debug.Log("Timer Running");
+                DisplayTime(timeRemaining);
+                Debug.Log(timeRemaining);
                 timeRemaining -= Time.deltaTime;
             }
             else
@@ -34,7 +39,8 @@ public class Timer : NetworkBehaviour
     }
     void DisplayTime(float timeToDisplay) //enter timeRemaining
     {
-        float minutes = Mathf.FloorToInt(timeToDisplay / 60); 
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+        float minutes = Mathf.FloorToInt(timeRemaining / 60); 
+        float seconds = Mathf.FloorToInt(timeRemaining % 60);
+        timerLabel.text = ("Time Remaining:    " + minutes + ":" + seconds);
     }
 }

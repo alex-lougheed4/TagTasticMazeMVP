@@ -11,7 +11,7 @@ public class Player : NetworkBehaviour{
     public Material taggedMaterial;
     public Material untaggedMaterial;
 
-    int playerMaterialStringRequestCount = 0;
+    int playerMaterialStringRequestCount = 1;
 
     string[] playerMaterialStrings = {"Player1Untagged","Player2Untagged","Player3Untagged","Player4Untagged"}; 
     string[] playerTaggedMaterialStrings = {"Player1Tagged","Player2Tagged","Player3Tagged","Player4Tagged"}; 
@@ -29,8 +29,8 @@ public class Player : NetworkBehaviour{
     public override void OnStartLocalPlayer()
     {
         requestThisPlayerMaterialString();
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        thisPlayerMat = Resources.Load<Material>(thisPlayerUntaggedMaterialString);
+        setPlayerMaterial();
+
         meshRenderer.material = thisPlayerMat;
         untaggedMaterial = meshRenderer.material;
         taggedMaterial = Resources.Load<Material>(thisPlayerTaggedMaterialString);
@@ -64,9 +64,13 @@ public class Player : NetworkBehaviour{
     }
 
 //only calls on server so people can't call this function from a client themselves
-    [ServerCallback]
     void onCollisionEnter(Collision collisionInfo){
         if(collisionInfo.collider.tag == "Tag"){
+            Debug.Log("collision");
+            Destroy(collisionInfo.gameObject);
+            updateTaggedState();
+        }
+        if(collisionInfo.collider.tag == "Player"){
             Debug.Log("collision");
             Destroy(collisionInfo.gameObject);
             updateTaggedState();
@@ -92,6 +96,13 @@ public class Player : NetworkBehaviour{
 
         playerMaterialStringRequestCount++;
         Debug.Log("Recieved playerMaterial string from server");
+    }
+
+    void setPlayerMaterial(){
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        thisPlayerMat = Resources.Load<Material>(thisPlayerUntaggedMaterialString);
+        Debug.Log(thisPlayerUntaggedMaterialString);
+
     }
 }
 
