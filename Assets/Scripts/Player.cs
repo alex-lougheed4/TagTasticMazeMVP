@@ -67,6 +67,8 @@ public class Player : NetworkBehaviour{
         
     }
 
+//only calls on server so people can't call this function from a client themselves
+    [ServerCallback]
     void onCollisionEnter(Collision collisionInfo){
         if(collisionInfo.collider.tag == "Tag"){
             Debug.Log("collision");
