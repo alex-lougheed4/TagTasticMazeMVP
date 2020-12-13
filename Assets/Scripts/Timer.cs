@@ -9,32 +9,57 @@ public class Timer : NetworkBehaviour
     public Text timerLabel;
     public float timeRemaining = 240;
     public bool timerIsRunning = false;
+
+    bool starterTimerBool = false;
+
+    bool gameRunTimerBool = false;
+
+    bool gameEnded = false;
     
     
 
-
-    private void Start()
-    {
-        // Starts the timer automatically
-        timerIsRunning = true;
+    private void starterTimer(){ //Timer countdown before game starts
+    timeRemaining = 10;
+    starterTimerBool = true;
     }
 
     void Update()
     {
-        if (timerIsRunning)
-        {
+        if(starterTimerBool){
             if (timeRemaining > 0)
             {
-                Debug.Log("Timer Running");
+                Debug.Log("starter Timer Running");
                 DisplayTime(timeRemaining);
                 Debug.Log(timeRemaining);
                 timeRemaining -= Time.deltaTime;
             }
             else
             {
-                Debug.Log("Time has run out!");
+                Debug.Log("starter Time has run out!");
                 timeRemaining = 0;
                 timerIsRunning = false;
+            }
+
+        }
+        if(gameRunTimerBool){
+
+            if (timerIsRunning)
+            {
+             if (timeRemaining > 0)
+                {
+                    Debug.Log("Timer Running");
+                    DisplayTime(timeRemaining);
+                    Debug.Log(timeRemaining);
+                    timeRemaining -= Time.deltaTime;
+                }
+                else
+                {
+                    Debug.Log("Time has run out!");
+                    timeRemaining = 0;
+                    timerIsRunning = false;
+                    gameEnded = true;
+                    
+                }
             }
         }
     }

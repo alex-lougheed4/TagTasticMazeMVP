@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,4 +26,28 @@ public class GameNetworkManager : NetworkManager
     {
         Debug.Log("Disconnected from Server!");
     }
+
+    public void gameEnd(){ //check if GameNetworkManager.gameEnded == true then end game function
+        //record last holder of tag
+        //freeze time (timescale)
+        //stop playermovement
+        
+    }
+
+    public void preGameCountdownStart(){
+        GameNetworkManager.starterTimer();
+        if (GameNetworkManager.timeRemaining == 0){ //should be moved to update function
+            GameNetworkManager.starterTimerBool = false;
+            startGame();
+        }
+    }
+
+    public void startGame(){
+        //Start Timer 
+        GameNetworkManager.gameRunTimerBool = true;
+        GameNetworkManager.timerIsRunning = true;
+        // Allows player movement 
+        // Set timescale to 1 (not frozen)
+    }
+    
 }
