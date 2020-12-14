@@ -30,8 +30,9 @@ public class GameNetworkManager : NetworkManager
         {
             
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-            player.GetComponent<Player>().playerMaterialIndex = 0;
+            
             NetworkServer.AddPlayerForConnection(conn,player);
+            player.GetComponent<Player>().playerMaterialIndex = totalPlayers;
             totalPlayers++; 
         }
 

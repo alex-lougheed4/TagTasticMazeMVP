@@ -7,21 +7,30 @@ public class Player : NetworkBehaviour{
     
     string[] playerMaterialStrings = {"Player1Untagged","Player2Untagged","Player3Untagged","Player4Untagged"}; 
     string[] playerTaggedMaterialStrings = {"Player1Tagged","Player2Tagged","Player3Tagged","Player4Tagged"}; 
+    
 
+    //Material[] playerMaterials = {Resources.Load<Material>("Materials/Player1Untagged"),Resources.Load<Material>("Materials/Player2Untagged"),Resources.Load<Material>("Materials/Player3Untagged"),Resources.Load<Material>("Materials/Player4Untagged")};
+    //Material[] playerTaggedMaterials = {Resources.Load<Material>("Materials/Player1Tagged"),Resources.Load<Material>("Materials/Player2Tagged"),Resources.Load<Material>("Materials/Player3Tagged"),Resources.Load<Material>("Materials/Player4Tagged")};
 
     public MeshRenderer meshRenderer;
     public Material taggedMaterial;
     public Material untaggedMaterial;
-    int playerMaterialStringRequestCount = 1;
     string thisPlayerUntaggedMaterialString;
     string thisPlayerTaggedMaterialString;
     bool hasTag = false;
 
     
-    [SyncVar(hook = nameof(MyHook))] public int playerMaterialIndex;
+    [SyncVar(hook = nameof(MyHook))] public int playerMaterialIndex = -1;
     private void MyHook(int oldPlayerMaterialIndex, int newPlayerMaterialIndex) { 
+        Debug.Log(newPlayerMaterialIndex + "alpha");
         thisPlayerUntaggedMaterialString = playerMaterialStrings[newPlayerMaterialIndex];
         thisPlayerTaggedMaterialString = playerTaggedMaterialStrings[newPlayerMaterialIndex];
+
+        untaggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerUntaggedMaterialString);
+        taggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerTaggedMaterialString);
+
+        meshRenderer.material = untaggedMaterial;
+
 
      }
 
@@ -30,14 +39,7 @@ public class Player : NetworkBehaviour{
 
         
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        Debug.Log(thisPlayerUntaggedMaterialString);
-
-        untaggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerUntaggedMaterialString);
-
-        meshRenderer.material = untaggedMaterial;
-        taggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerTaggedMaterialString);
-
-
+        
         float randomPosX = (float)Random.Range(-15f, 15f);
         float randomPosZ = (float)Random.Range(-15f, 15f);
         transform.position = new Vector3(randomPosX,0,randomPosZ);
@@ -58,10 +60,7 @@ public class Player : NetworkBehaviour{
 
     void Update(){
         HandleMovement();
-        if (hasTag)
-        {
-            meshRenderer.material = taggedMaterial;
-        }
+
         
     }
 
@@ -85,11 +84,21 @@ public class Player : NetworkBehaviour{
     }
 
     public void UpdatePlayerMaterial(){
-        if(meshRenderer.material = untaggedMaterial){
-            meshRenderer.material = taggedMaterial;
+
+        if(meshRenderer.material = Resources.Load<Material>("Materials/Player1Untagged")){
+            meshRenderer.material = Resources.Load<Material>("Materials/Player1Tagged");
         }
-        else if (meshRenderer.material = taggedMaterial){
-            meshRenderer.material = untaggedMaterial;
+        else if (meshRenderer.material = Resources.Load<Material>("Materials/Player1Tagged")){
+            meshRenderer.material = Resources.Load<Material>("Materials/Player1Untagged");
+        }
+        else{
+
+            if(meshRenderer.material = untaggedMaterial){
+                meshRenderer.material = taggedMaterial;
+            }
+            else if (meshRenderer.material = taggedMaterial){
+                meshRenderer.material = untaggedMaterial;
+            }
         }
     }
 
