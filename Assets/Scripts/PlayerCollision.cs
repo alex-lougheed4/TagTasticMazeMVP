@@ -12,6 +12,7 @@ public class PlayerCollision : NetworkBehaviour
          Destroy(collisionInfo.gameObject);
          thisPlayer.updateTaggedState();
      }
+     
  }
 
 

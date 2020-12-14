@@ -6,9 +6,38 @@ using Mirror;
 
 public class GameNetworkManager : NetworkManager
 {
+    string playerMaterial;
+    TimerClass countdownTimer = new TimerClass();
+    TimerClass gameTimer = new TimerClass();
+    public int totalPlayers = 0;
+
+    int playerMaterialIndex;
+
+    [Server]
+    private void UpdateMyInt() { 
+        playerMaterialIndex = totalPlayers;
+     }
+
+
+
+    public override void OnServerAddPlayer(NetworkConnection conn)
+    {
+        //base.OnServerAddPlayer(conn);
+        GameObject player;
+        
+
+        if(totalPlayers <=4)
+        {
+            
+            player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+            player.GetComponent<Player>().playerMaterialIndex = 0;
+            NetworkServer.AddPlayerForConnection(conn,player);
+            totalPlayers++; 
+        }
+
+    }
     public override void OnStartServer()
     {
-        
         Debug.Log("Server Started!");
     }
 
@@ -20,6 +49,7 @@ public class GameNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         Debug.Log("Connected to Server!");
+        
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)
@@ -27,7 +57,7 @@ public class GameNetworkManager : NetworkManager
         Debug.Log("Disconnected from Server!");
     }
 
-    public void gameEnd(){ //check if GameNetworkManager.gameEnded == true then end game function
+   /** public void gameEnd(){ //check if GameNetworkManager.gameEnded == true then end game function
         //record last holder of tag
         //freeze time (timescale)
         //stop playermovement
@@ -35,19 +65,22 @@ public class GameNetworkManager : NetworkManager
     }
 
     public void preGameCountdownStart(){
-        GameNetworkManager.starterTimer();
-        if (GameNetworkManager.timeRemaining == 0){ //should be moved to update function
-            GameNetworkManager.starterTimerBool = false;
+        timer.starterTimer();
+        Debug.Log(timer.starterTimerBool);
+        if (timer.timeRemaining == 0){ //should be moved to update function
+           timer.starterTimerBool = false;
             startGame();
         }
     }
 
     public void startGame(){
         //Start Timer 
-        GameNetworkManager.gameRunTimerBool = true;
-        GameNetworkManager.timerIsRunning = true;
+        timer.timeRemaining = 60;
+        timer.gameRunTimerBool = true;
+        timer.timerIsRunning = true;
         // Allows player movement 
         // Set timescale to 1 (not frozen)
     }
+    **/
     
 }

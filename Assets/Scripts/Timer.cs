@@ -10,17 +10,15 @@ public class Timer : NetworkBehaviour
     public float timeRemaining = 240;
     public bool timerIsRunning = false;
 
-    bool starterTimerBool = false;
+    public bool starterTimerBool = false;
 
-    bool gameRunTimerBool = false;
+    public bool gameRunTimerBool = false;
 
-    bool gameEnded = false;
+    public bool gameEnded = false;
     
-    
-
-    private void starterTimer(){ //Timer countdown before game starts
-    timeRemaining = 10;
-    starterTimerBool = true;
+    public void starterTimer(){ //Timer countdown before game starts
+        timeRemaining = 10;
+        starterTimerBool = true;
     }
 
     void Update()

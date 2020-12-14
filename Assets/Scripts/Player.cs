@@ -5,35 +5,37 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour{
     
-    public Material thisPlayerMat;
+    string[] playerMaterialStrings = {"Player1Untagged","Player2Untagged","Player3Untagged","Player4Untagged"}; 
+    string[] playerTaggedMaterialStrings = {"Player1Tagged","Player2Tagged","Player3Tagged","Player4Tagged"}; 
+
 
     public MeshRenderer meshRenderer;
     public Material taggedMaterial;
     public Material untaggedMaterial;
-
     int playerMaterialStringRequestCount = 1;
-
-    string[] playerMaterialStrings = {"Player1Untagged","Player2Untagged","Player3Untagged","Player4Untagged"}; 
-    string[] playerTaggedMaterialStrings = {"Player1Tagged","Player2Tagged","Player3Tagged","Player4Tagged"}; 
-    
     string thisPlayerUntaggedMaterialString;
     string thisPlayerTaggedMaterialString;
-
-
-    
-
-
     bool hasTag = false;
 
+    
+    [SyncVar(hook = nameof(MyHook))] public int playerMaterialIndex;
+    private void MyHook(int oldPlayerMaterialIndex, int newPlayerMaterialIndex) { 
+        thisPlayerUntaggedMaterialString = playerMaterialStrings[newPlayerMaterialIndex];
+        thisPlayerTaggedMaterialString = playerTaggedMaterialStrings[newPlayerMaterialIndex];
+
+     }
 
     public override void OnStartLocalPlayer()
     {
-        requestThisPlayerMaterialString();
-        setPlayerMaterial();
 
-        meshRenderer.material = thisPlayerMat;
-        untaggedMaterial = meshRenderer.material;
-        taggedMaterial = Resources.Load<Material>(thisPlayerTaggedMaterialString);
+        
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        Debug.Log(thisPlayerUntaggedMaterialString);
+
+        untaggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerUntaggedMaterialString);
+
+        meshRenderer.material = untaggedMaterial;
+        taggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerTaggedMaterialString);
 
 
         float randomPosX = (float)Random.Range(-15f, 15f);
@@ -79,30 +81,17 @@ public class Player : NetworkBehaviour{
 
     public void updateTaggedState(){
         hasTag = !hasTag;
+        UpdatePlayerMaterial();
     }
 
-    [Command]
-    void requestThisPlayerMaterialString(){
-        Debug.Log("Recieved playerMaterial request from client");
-        getThisPlayerMaterialString();
-
-
+    public void UpdatePlayerMaterial(){
+        if(meshRenderer.material = untaggedMaterial){
+            meshRenderer.material = taggedMaterial;
+        }
+        else if (meshRenderer.material = taggedMaterial){
+            meshRenderer.material = untaggedMaterial;
+        }
     }
 
-    [TargetRpc]
-    void getThisPlayerMaterialString(){
-        thisPlayerUntaggedMaterialString = playerMaterialStrings[playerMaterialStringRequestCount];
-        thisPlayerTaggedMaterialString = playerTaggedMaterialStrings[playerMaterialStringRequestCount];
-
-        playerMaterialStringRequestCount++;
-        Debug.Log("Recieved playerMaterial string from server");
-    }
-
-    void setPlayerMaterial(){
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        thisPlayerMat = Resources.Load<Material>(thisPlayerUntaggedMaterialString);
-        Debug.Log(thisPlayerUntaggedMaterialString);
-
-    }
 }
 
