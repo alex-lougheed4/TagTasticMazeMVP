@@ -15,7 +15,7 @@ public class PlayerCollision : NetworkBehaviour
     }
     if(collisionInfo.collider.tag == "Player"){ //check if either player has tag first
     thatPlayer = collisionInfo.gameObject.GetComponent<Player>();
-        if ((thisPlayer.returnHasTag() && !thatPlayer.returnHasTag()) || (!thisPlayer.returnHasTag() && thatPlayer.returnHasTag())){
+        if (((thisPlayer.returnHasTag()==true) && (thatPlayer.returnHasTag()==false)) || ((thisPlayer.returnHasTag()==false) && (thatPlayer.returnHasTag()==true))){
             Debug.Log("collision");
             thisPlayer.updateTaggedState();
             thatPlayer.updateTaggedState();

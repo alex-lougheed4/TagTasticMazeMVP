@@ -16,17 +16,18 @@ public class Timer : NetworkBehaviour
 
     public bool gameEnded = false;
 
-    [ClientRpc]
+  /**  [ClientRpc]
     void RpcUpdateTimer(int varToSync){
         timeRemaining = varToSync;
     }
+    **/
 
     public void startFunc(){
         countdownTimer.createTimer("STARTER",10);
     }
     void Update(){
 
-        RpcUpdateTimer(timeRemaining);
+        //RpcUpdateTimer(timeRemaining);
         DisplayTime(timeRemaining);
     }
  

@@ -30,11 +30,13 @@ public class GameNetworkManager : NetworkManager
 
         if(totalPlayers <=4)
         {
-            
-            player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-            player.GetComponent<Player>().playerMaterialIndex = totalPlayers;
-            NetworkServer.AddPlayerForConnection(conn,player);
             totalPlayers++; 
+            player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+            player.name += totalPlayers;
+            //Texture s = Resources.Load<Texture>("playerTextures/Player"+ totalPlayers + "_untagged");
+            player.GetComponent<Player>().setTextureValue(totalPlayers);
+            NetworkServer.AddPlayerForConnection(conn,player);
+            
             //test
             powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
             powerUp.GetComponent<Powerup>().spawnPowerUp();

@@ -5,40 +5,40 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour{
     
-    string[] playerMaterialStrings = {"Player1Untagged","Player2Untagged","Player3Untagged","Player4Untagged"}; 
-    string[] playerTaggedMaterialStrings = {"Player1Tagged","Player2Tagged","Player3Tagged","Player4Tagged"}; 
+  
 
+    public Texture[] untaggedPlayerTextures = null;
+    public Texture[] taggedPlayerTextures = null;
+
+    Texture thisPlayerUntaggedTexture;
+    Texture thisPlayerTaggedTexture;
     
-    
-
-
-    public MeshRenderer meshRenderer;
-    public Material taggedMaterial;
-    public Material untaggedMaterial;
-    string thisPlayerUntaggedMaterialString;
-    string thisPlayerTaggedMaterialString;
+ 
     bool hasTag = false;
 
+    [SyncVar (hook = nameof(OnTextureValueChange))] protected int textureValue;
+
+    public void OnTextureValueChange(int old, int new_)
+    {
+        thisPlayerUntaggedTexture = untaggedPlayerTextures[textureValue-1];
+        thisPlayerTaggedTexture = taggedPlayerTextures[textureValue-1];
+        GetComponent<MeshRenderer>().material.mainTexture = untaggedPlayerTextures[textureValue-1]; 
+    }
+    public void setTextureValue(int value)
+    {
+        textureValue = value;
+    }
+
     
-    [SyncVar(hook = nameof(MyHook))] public int playerMaterialIndex = -1;
-    private void MyHook(int oldPlayerMaterialIndex, int newPlayerMaterialIndex) { 
-        Debug.Log(newPlayerMaterialIndex + "alpha");
-        thisPlayerUntaggedMaterialString = playerMaterialStrings[newPlayerMaterialIndex];
-        thisPlayerTaggedMaterialString = playerTaggedMaterialStrings[newPlayerMaterialIndex];
-
-        untaggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerUntaggedMaterialString);
-        taggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerTaggedMaterialString);
-
-        meshRenderer.material = untaggedMaterial; //for some reason doesn't work for player 1 but player 1 can use the default player material anway since it's assigned to player 1 naturally
+ 
 
 
-     }
 
     public override void OnStartLocalPlayer()
     {
 
         
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        
         
         float randomPosX = (float)Random.Range(-15f, 15f);
         float randomPosZ = (float)Random.Range(-15f, 15f);
@@ -64,42 +64,22 @@ public class Player : NetworkBehaviour{
         
     }
 
-//only calls on server so people can't call this function from a client themselves
-/**    void onCollisionEnter(Collision collisionInfo){
-        if(collisionInfo.collider.tag == "Tag"){
-            Debug.Log("collision");
-            Destroy(collisionInfo.gameObject);
-            updateTaggedState();
-        }
-        if(collisionInfo.collider.tag == "Player"){
-            Debug.Log("collision");
-            Destroy(collisionInfo.gameObject);
-            updateTaggedState();
-        }
-    }
-    **/
 
     public void updateTaggedState(){
         hasTag = !hasTag;
-        UpdatePlayerMaterial();
+        UpdatePlayerTexture();
     }
 
-    public void UpdatePlayerMaterial(){
-
-        if(meshRenderer.material = Resources.Load<Material>("Materials/Player1Untagged")){          //taggedmaterial was null for player1's material so this method used as a quick fix
-            meshRenderer.material = Resources.Load<Material>("Materials/Player1Tagged");
+    public void UpdatePlayerTexture(){
+        if (GetComponent<MeshRenderer>().material.mainTexture ==thisPlayerUntaggedTexture){
+            GetComponent<MeshRenderer>().material.mainTexture = thisPlayerTaggedTexture;
         }
-        else if (meshRenderer.material = Resources.Load<Material>("Materials/Player1Tagged")){
-            meshRenderer.material = Resources.Load<Material>("Materials/Player1Untagged");
-        }
-        else if(meshRenderer.material = untaggedMaterial){
-            meshRenderer.material = taggedMaterial;
-        }
-         else if (meshRenderer.material = taggedMaterial){
-            meshRenderer.material = untaggedMaterial;
+        else if (GetComponent<MeshRenderer>().material.mainTexture == thisPlayerTaggedTexture){
+            GetComponent<MeshRenderer>().material.mainTexture = thisPlayerUntaggedTexture;
         }
         
     }
+    
 
     public bool returnHasTag(){
         return hasTag;

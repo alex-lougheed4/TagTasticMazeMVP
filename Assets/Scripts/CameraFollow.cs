@@ -12,7 +12,7 @@ public class CameraFollow : NetworkBehaviour
 
     void Start()
     {
-        offset = transform.position - target.position;
+        offset.y = 17.5f;
     }
 
     void FixedUpdate()
