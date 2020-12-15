@@ -7,10 +7,12 @@ using Mirror;
 public class GameNetworkManager : NetworkManager
 {
     string playerMaterial;
-    TimerClass countdownTimer = new TimerClass();
-    TimerClass gameTimer = new TimerClass();
+
+    public Timer timer;
+
     public int totalPlayers = 0;
 
+    public int maxPlayers = 1;
     int playerMaterialIndex;
 
     [Server]
@@ -19,21 +21,29 @@ public class GameNetworkManager : NetworkManager
      }
 
 
-
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         //base.OnServerAddPlayer(conn);
         GameObject player;
+        GameObject powerUp;
         
 
         if(totalPlayers <=4)
         {
             
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-            
-            NetworkServer.AddPlayerForConnection(conn,player);
             player.GetComponent<Player>().playerMaterialIndex = totalPlayers;
+            NetworkServer.AddPlayerForConnection(conn,player);
             totalPlayers++; 
+            //test
+            powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
+            powerUp.GetComponent<Powerup>().spawnPowerUp();
+            Debug.Log("PowerUpSpawned");
+        }
+        if(totalPlayers == maxPlayers){
+        
+
+            timer.startFunc();
         }
 
     }
@@ -58,30 +68,5 @@ public class GameNetworkManager : NetworkManager
         Debug.Log("Disconnected from Server!");
     }
 
-   /** public void gameEnd(){ //check if GameNetworkManager.gameEnded == true then end game function
-        //record last holder of tag
-        //freeze time (timescale)
-        //stop playermovement
-        
-    }
-
-    public void preGameCountdownStart(){
-        timer.starterTimer();
-        Debug.Log(timer.starterTimerBool);
-        if (timer.timeRemaining == 0){ //should be moved to update function
-           timer.starterTimerBool = false;
-            startGame();
-        }
-    }
-
-    public void startGame(){
-        //Start Timer 
-        timer.timeRemaining = 60;
-        timer.gameRunTimerBool = true;
-        timer.timerIsRunning = true;
-        // Allows player movement 
-        // Set timescale to 1 (not frozen)
-    }
-    **/
-    
+ 
 }

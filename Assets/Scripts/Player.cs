@@ -1,4 +1,4 @@
-﻿using Mirror;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +7,10 @@ public class Player : NetworkBehaviour{
     
     string[] playerMaterialStrings = {"Player1Untagged","Player2Untagged","Player3Untagged","Player4Untagged"}; 
     string[] playerTaggedMaterialStrings = {"Player1Tagged","Player2Tagged","Player3Tagged","Player4Tagged"}; 
+
+    
     
 
-    //Material[] playerMaterials = {Resources.Load<Material>("Materials/Player1Untagged"),Resources.Load<Material>("Materials/Player2Untagged"),Resources.Load<Material>("Materials/Player3Untagged"),Resources.Load<Material>("Materials/Player4Untagged")};
-    //Material[] playerTaggedMaterials = {Resources.Load<Material>("Materials/Player1Tagged"),Resources.Load<Material>("Materials/Player2Tagged"),Resources.Load<Material>("Materials/Player3Tagged"),Resources.Load<Material>("Materials/Player4Tagged")};
 
     public MeshRenderer meshRenderer;
     public Material taggedMaterial;
@@ -29,7 +29,7 @@ public class Player : NetworkBehaviour{
         untaggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerUntaggedMaterialString);
         taggedMaterial = Resources.Load<Material>("Materials/" + thisPlayerTaggedMaterialString);
 
-        meshRenderer.material = untaggedMaterial;
+        meshRenderer.material = untaggedMaterial; //for some reason doesn't work for player 1 but player 1 can use the default player material anway since it's assigned to player 1 naturally
 
 
      }
@@ -65,7 +65,7 @@ public class Player : NetworkBehaviour{
     }
 
 //only calls on server so people can't call this function from a client themselves
-    void onCollisionEnter(Collision collisionInfo){
+/**    void onCollisionEnter(Collision collisionInfo){
         if(collisionInfo.collider.tag == "Tag"){
             Debug.Log("collision");
             Destroy(collisionInfo.gameObject);
@@ -77,6 +77,7 @@ public class Player : NetworkBehaviour{
             updateTaggedState();
         }
     }
+    **/
 
     public void updateTaggedState(){
         hasTag = !hasTag;
@@ -85,21 +86,23 @@ public class Player : NetworkBehaviour{
 
     public void UpdatePlayerMaterial(){
 
-        if(meshRenderer.material = Resources.Load<Material>("Materials/Player1Untagged")){
+        if(meshRenderer.material = Resources.Load<Material>("Materials/Player1Untagged")){          //taggedmaterial was null for player1's material so this method used as a quick fix
             meshRenderer.material = Resources.Load<Material>("Materials/Player1Tagged");
         }
         else if (meshRenderer.material = Resources.Load<Material>("Materials/Player1Tagged")){
             meshRenderer.material = Resources.Load<Material>("Materials/Player1Untagged");
         }
-        else{
-
-            if(meshRenderer.material = untaggedMaterial){
-                meshRenderer.material = taggedMaterial;
-            }
-            else if (meshRenderer.material = taggedMaterial){
-                meshRenderer.material = untaggedMaterial;
-            }
+        else if(meshRenderer.material = untaggedMaterial){
+            meshRenderer.material = taggedMaterial;
         }
+         else if (meshRenderer.material = taggedMaterial){
+            meshRenderer.material = untaggedMaterial;
+        }
+        
+    }
+
+    public bool returnHasTag(){
+        return hasTag;
     }
 
 }

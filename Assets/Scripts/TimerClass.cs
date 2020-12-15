@@ -39,4 +39,12 @@ public class TimerClass
         
     }
 
+    private int getStartTimeRemaining(){
+        return startTimeRemaining;
+    }
+
+    private int getGameTimeRemaining(){
+        return gameTimeRemaining;
+    }
+
 }

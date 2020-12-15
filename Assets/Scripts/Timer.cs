@@ -6,62 +6,33 @@ using Mirror;
 
 public class Timer : NetworkBehaviour
 {
-    public Text timerLabel;
-    public float timeRemaining = 240;
+
+    TimerClass countdownTimer = new TimerClass();
+    TimerClass gameTimer = new TimerClass();
+
+    [SyncVar] int timeRemaining;    public Text timerLabel;
+
     public bool timerIsRunning = false;
 
-    public bool starterTimerBool = false;
-
-    public bool gameRunTimerBool = false;
-
     public bool gameEnded = false;
-    
-    public void starterTimer(){ //Timer countdown before game starts
-        timeRemaining = 10;
-        starterTimerBool = true;
+
+    [ClientRpc]
+    void RpcUpdateTimer(int varToSync){
+        timeRemaining = varToSync;
     }
 
-    void Update()
-    {
-        if(starterTimerBool){
-            if (timeRemaining > 0)
-            {
-                Debug.Log("starter Timer Running");
-                DisplayTime(timeRemaining);
-                Debug.Log(timeRemaining);
-                timeRemaining -= Time.deltaTime;
-            }
-            else
-            {
-                Debug.Log("starter Time has run out!");
-                timeRemaining = 0;
-                timerIsRunning = false;
-            }
-
-        }
-        if(gameRunTimerBool){
-
-            if (timerIsRunning)
-            {
-             if (timeRemaining > 0)
-                {
-                    Debug.Log("Timer Running");
-                    DisplayTime(timeRemaining);
-                    Debug.Log(timeRemaining);
-                    timeRemaining -= Time.deltaTime;
-                }
-                else
-                {
-                    Debug.Log("Time has run out!");
-                    timeRemaining = 0;
-                    timerIsRunning = false;
-                    gameEnded = true;
-                    
-                }
-            }
-        }
+    public void startFunc(){
+        countdownTimer.createTimer("STARTER",10);
     }
-    void DisplayTime(float timeToDisplay) //enter timeRemaining
+    void Update(){
+
+        RpcUpdateTimer(timeRemaining);
+        DisplayTime(timeRemaining);
+    }
+ 
+
+
+    void DisplayTime(float timeRemaining) //enter timeRemaining
     {
         float minutes = Mathf.FloorToInt(timeRemaining / 60); 
         float seconds = Mathf.FloorToInt(timeRemaining % 60);
