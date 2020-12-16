@@ -497,6 +497,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a2394da04a7b7b4d818553d39daca5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &913860113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 913860115}
+  - component: {fileID: 913860114}
+  - component: {fileID: 913860116}
+  m_Layer: 0
+  m_Name: MazeLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &913860114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913860113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0e565a0e0d4aca4d913d076cbf14f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  width: 10
+  size: 1
+  height: 10
+  wallPrefab: {fileID: 4350045985349233109, guid: 3ca6e4efa8c869d48bce4d6e1f6e50f8,
+    type: 3}
+--- !u!4 &913860115
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913860113}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &913860116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913860113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1121198379
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,6 +823,7 @@ MonoBehaviour:
   timer: {fileID: 478883875}
   totalPlayers: 0
   maxPlayers: 2
+  MazeLoader: {fileID: 913860113}
 --- !u!4 &1151260082
 Transform:
   m_ObjectHideFlags: 0

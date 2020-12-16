@@ -15,6 +15,10 @@ public class GameNetworkManager : NetworkManager
     public int maxPlayers = 1;
     int playerMaterialIndex;
 
+    int mazeSeed;
+    public GameObject MazeLoader;
+
+
     [Server]
     private void UpdateMyInt() { 
         playerMaterialIndex = totalPlayers;
@@ -36,6 +40,10 @@ public class GameNetworkManager : NetworkManager
             //Texture s = Resources.Load<Texture>("playerTextures/Player"+ totalPlayers + "_untagged");
             player.GetComponent<Player>().setTextureValue(totalPlayers);
             NetworkServer.AddPlayerForConnection(conn,player);
+
+            if (totalPlayers > 1 && totalPlayers <= maxPlayers){
+                MazeLoader.GetComponent<MazeLoader>().createMazeClient();
+            }
             
             //test
             powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
@@ -52,6 +60,7 @@ public class GameNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         Debug.Log("Server Started!");
+        
     }
 
     public override void OnStopServer()
