@@ -12,7 +12,7 @@ public class GameNetworkManager : NetworkManager
 
     public int totalPlayers = 0;
 
-    public int maxPlayers = 1;
+    public int maxPlayers;
     int playerMaterialIndex;
 
     int mazeSeed;
@@ -33,7 +33,7 @@ public class GameNetworkManager : NetworkManager
         
 
         if(totalPlayers <=maxPlayers)
-        {
+        {   
             totalPlayers++; 
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
             player.name += totalPlayers;
@@ -52,8 +52,8 @@ public class GameNetworkManager : NetworkManager
         }
         if(totalPlayers == maxPlayers){
         
-
             timer.startcountDownFunc();
+            Debug.Log("Timer started");
         }
 
     }
