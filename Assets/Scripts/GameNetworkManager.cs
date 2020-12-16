@@ -53,10 +53,11 @@ public class GameNetworkManager : NetworkManager
         if(totalPlayers == maxPlayers){
         
 
-            timer.startFunc();
+            timer.startcountDownFunc();
         }
 
     }
+
     public override void OnStartServer()
     {
         Debug.Log("Server Started!");
