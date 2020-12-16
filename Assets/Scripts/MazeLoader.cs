@@ -7,7 +7,7 @@ public class MazeLoader : NetworkBehaviour
 {
     [SerializeField]
     [Range(1,50)]
-    private int width = 10;
+    private int width =10;
 
     [SerializeField]
     private float size = 1f;

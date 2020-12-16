@@ -10,25 +10,30 @@ public class Timer : NetworkBehaviour
     TimerClass countdownTimer = new TimerClass();
     TimerClass gameTimer = new TimerClass();
 
-    [SyncVar] int timeRemaining;    public Text timerLabel;
+    [SyncVar] int timeRemaining;    
+    public Text timerLabel;
 
     public bool timerIsRunning = false;
 
     public bool gameEnded = false;
 
-  /**  [ClientRpc]
+    [ClientRpc]
     void RpcUpdateTimer(int varToSync){
         timeRemaining = varToSync;
     }
-    **/
+    
 
     public void startFunc(){
         countdownTimer.createTimer("STARTER",10);
     }
     void Update(){
-
-        //RpcUpdateTimer(timeRemaining);
+        ServerTimerUpdate();
         DisplayTime(timeRemaining);
+    }
+
+    [Server]
+    void ServerTimerUpdate(){
+        RpcUpdateTimer(timeRemaining);
     }
  
 

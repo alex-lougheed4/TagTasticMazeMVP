@@ -32,7 +32,7 @@ public class GameNetworkManager : NetworkManager
         GameObject powerUp;
         
 
-        if(totalPlayers <=4)
+        if(totalPlayers <=maxPlayers)
         {
             totalPlayers++; 
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
