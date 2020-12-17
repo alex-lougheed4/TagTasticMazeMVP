@@ -7,12 +7,12 @@ using System.Collections;
 public class Timer : NetworkBehaviour
 {
 
-    [SyncVar(hook = nameof(OnTimeRemainingValueChange))] protected int countDownTimeRemaining = 10; //change value for length of timer
+    [SyncVar(hook = nameof(OnTimeRemainingValueChange))] protected int countDownTimeRemaining = 60; //change value for length of timer
     public void OnTimeRemainingValueChange(int old, int new_Value)
     {
         //After the server changed the remainingTime, this will be called on ALL clients.
         //So we dont have to put DisplayTime in a update function, we just call it here, whenever the value changes
-        Debug.Log("OnTimeRemainingValueChange");
+        //Debug.Log("OnTimeRemainingValueChange");
         countDownTimeRemaining = new_Value;
         DisplayTime(countDownTimeRemaining);
     }
@@ -52,5 +52,9 @@ public class Timer : NetworkBehaviour
         float minutes = Mathf.FloorToInt(timeRemaining / 60);
         float seconds = Mathf.FloorToInt(timeRemaining % 60);
         timerLabel.text = ("Time Remaining:    " + minutes + ":" + seconds);
+    }
+
+    public float getTimeRemaining(){
+        return countDownTimeRemaining;
     }
 }

@@ -17,67 +17,51 @@ public class MazeLoader : NetworkBehaviour
     private int height = 10;
 
     [SerializeField]
+    [Range(1,200)]//Only allow ranges from 1,200 can be changed
+    private int mazeSizeX = 16;//How many cells in the x axis <--Edited in unity by using slider where script is attached to
+
+    [SerializeField]
+    [Range(1,200)]//Only allow ranges from 1,200 can be changed
+    private int mazeSizeY = 16;//How many cells in the y axis <--Edited in unity by using slider where script is attached to
+
+
+    [SerializeField]
     private Transform wallPrefab = null;
 
-    [SyncVar] int mazeSeed;
+
+    [SyncVar(hook = nameof(createMaze))] int mazeSeed = -1;
 
     // Start is called before the first frame update
-    void createMaze(int seed){
-        Random.InitState(seed);
-        Prims prims = new Prims(Random.Range(0,15),Random.Range(0,15)); //Create Prims Object      
+    
+void createMaze(int oldseed, int newseed)
+{
+        Random.InitState(newseed);
+        Prims prims = new Prims(mazeSizeX,mazeSizeY); //Create Prims Object      
         prims.loop(); //Run Prims Algorithm to Completition
         //prims.draw(); <-- String Based UI
         var maze = prims.getMaze(); //Retrieve Maze Information
         Draw(maze); //Graphical UI
 
     }
-    public void createMazeServer(){
-        createMaze(mazeSeed);
-    }
-
-    [ClientRpc]
-    public void createMazeClient(){
-        createMaze(mazeSeed);
-    }
 
     public override void OnStartServer()
     {
         Debug.Log("Maze Created");
         mazeSeed = Random.Range(0,255);
-        createMazeServer();
+        createMaze(0, mazeSeed);
     }
 
 
 
     private void Draw(Cell[,] maze)
     {
-        //for (int y = 0; y < 2; y++)
-        //{
-        //    for (int x = 0; x < 10; x++)
-        //    {
-        //        var position = new Vector3(-width / 2 +y, 0, -height / 2 + x);//y is across x is up (when - width and height)
 
-        //        var topWall = Instantiate(wallPrefab, transform) as Transform;
-        //        topWall.position = position + new Vector3(0, 0, size / 2);
-
-        //        var leftWall = Instantiate(wallPrefab, transform) as Transform;
-        //        leftWall.position = position + new Vector3(-size / 2, 0, 0);
-        //        leftWall.eulerAngles = new Vector3(0, 90, 0);
-
-        //        var rightWall = Instantiate(wallPrefab, transform) as Transform;
-        //        rightWall.position = position + new Vector3(size / 2, 0, 0);
-        //        rightWall.eulerAngles = new Vector3(0, 90, 0);
-
-        //        var bottomWall = Instantiate(wallPrefab, transform) as Transform;
-        //        bottomWall.position = position + new Vector3(0, 0, -size / 2);
-        //    }
-        //}
-        for (int j = 0; j < 16; j++)
+        for (int j = 0; j < mazeSizeY; j++)
         {
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < mazeSizeX; i++)
             {
                 var cell = maze[j, i];
-                var position = new Vector3(-width / 2 + i, 0, -height / 2 - j);
+                var position = new Vector3(-15+ i, 0, 15 - j);
 
                 if (j == 0)
                 {
@@ -93,7 +77,7 @@ public class MazeLoader : NetworkBehaviour
                     leftWall.localScale = new Vector3(size, leftWall.localScale.y, leftWall.localScale.z);
                     leftWall.eulerAngles = new Vector3(0, 90, 0);
                 }
-                if (maze[j, i].getRight() || i==15)
+                if (maze[j, i].getRight() || i==mazeSizeX - 1)
                 {
                     var rightWall = Instantiate(wallPrefab, transform) as Transform;
                     rightWall.position = position + new Vector3(+size / 2, 0, 0);
@@ -101,7 +85,7 @@ public class MazeLoader : NetworkBehaviour
                     rightWall.eulerAngles = new Vector3(0, 90, 0);
 
                 }
-                if (maze[j, i].getBottom() || j==15)
+                if (maze[j, i].getBottom() || j==mazeSizeY - 1)
                 {
                     var bottomWall = Instantiate(wallPrefab, transform) as Transform;
                     bottomWall.position = position + new Vector3(0, 0, -size / 2);
@@ -111,9 +95,5 @@ public class MazeLoader : NetworkBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
 }

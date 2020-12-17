@@ -5,85 +5,98 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour{
     
-  
-
     public Texture[] untaggedPlayerTextures = null;
     public Texture[] taggedPlayerTextures = null;
 
     Texture thisPlayerUntaggedTexture;
     Texture thisPlayerTaggedTexture;
-    
- 
-    bool hasTag = false;
 
+    public float speed;
+    
+	[SyncVar(hook = nameof(OnTagChanged))]
+    bool hasTag = false;
+    float randomPosX;
+    float randomPosZ;
+
+    public void OnTagChanged(bool _, bool nowHasTag)
+	{
+        if(nowHasTag)
+            GetComponent<MeshRenderer>().material.mainTexture = thisPlayerTaggedTexture;
+		else
+	        GetComponent<MeshRenderer>().material.mainTexture = thisPlayerUntaggedTexture;
+    }
+    
     [SyncVar (hook = nameof(OnTextureValueChange))] protected int textureValue;
 
     public void OnTextureValueChange(int old, int new_)
     {
         thisPlayerUntaggedTexture = untaggedPlayerTextures[textureValue-1];
         thisPlayerTaggedTexture = taggedPlayerTextures[textureValue-1];
-        GetComponent<MeshRenderer>().material.mainTexture = untaggedPlayerTextures[textureValue-1]; 
+        GetComponent<MeshRenderer>().material.mainTexture = thisPlayerUntaggedTexture; 
     }
+
+	// This is no longer needed in this script - not sure if you're calling it
+	// server side or just setting textureValue above directly when spawning
     public void setTextureValue(int value)
     {
         textureValue = value;
     }
 
-    
- 
-
-
-
     public override void OnStartLocalPlayer()
     {
 
-        
-        
-        
-        float randomPosX = (float)Random.Range(-15f, 15f);
-        float randomPosZ = (float)Random.Range(-15f, 15f);
-        transform.position = new Vector3(randomPosX,0,randomPosZ);
+        generateRandomPositions();
+        if((randomPosX != 0) || (randomPosZ != 0)){
+            transform.position = new Vector3(randomPosX,0,randomPosZ);
+        }
 
         Camera.main.GetComponent<CameraFollow>().target=transform; //Fix camera on "me"
-  
-
     }
-    void HandleMovement(){
-        if(isLocalPlayer){
+
+    public void generateRandomPositions(){
+        randomPosX = (float)Random.Range(-15f, 15f);
+        randomPosZ = (float)Random.Range(-15f, 15f);
+    }
+
+    void HandleMovement()
+	{
+        if(isLocalPlayer)
+		{
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
-            Vector3 movement = new Vector3(moveHorizontal * 0.05f,0, moveVertical * 0.05f);
+            Vector3 movement = new Vector3(moveHorizontal * speed,0, moveVertical * speed);
             transform.position = transform.position + movement;
 
         }
     }
 
-    void Update(){
+    void Update()
+	{
         HandleMovement();
-
-        
     }
 
-
-    public void updateTaggedState(){
-        hasTag = !hasTag;
-        UpdatePlayerTexture();
-    }
-
-    public void UpdatePlayerTexture(){
-        if (GetComponent<MeshRenderer>().material.mainTexture ==thisPlayerUntaggedTexture){
-            GetComponent<MeshRenderer>().material.mainTexture = thisPlayerTaggedTexture;
-        }
-        else if (GetComponent<MeshRenderer>().material.mainTexture == thisPlayerTaggedTexture){
-            GetComponent<MeshRenderer>().material.mainTexture = thisPlayerUntaggedTexture;
-        }
-        
-    }
     
+	[ServerCallback]
+    void OnCollisionEnter(Collision collisionInfo)
+	{
+        if(collisionInfo.collider.tag == "Tag")
+		{    
+            Debug.Log("Collision with Tag Occured");
+            NetworkServer.Destroy(collisionInfo.gameObject);
+            hasTag = true;
+			return;
+        }
 
-    public bool returnHasTag(){
-        return hasTag;
+        if(collisionInfo.collider.tag == "Player")
+		{
+            Debug.Log("Collision with Player occured");
+            if(hasTag)
+			{
+               // Debug.Log(taggedPlayerObject);
+                Debug.Log("if i am tagged player");
+                collisionInfo.gameObject.GetComponent<Player>().hasTag = true;
+				hasTag = false;
+            }
+        }
     }
-
 }
-

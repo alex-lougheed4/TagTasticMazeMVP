@@ -4,27 +4,32 @@ using UnityEngine;
 
 public class Prims
 {
-    private Cell[,] cells = new Cell[16,16];
+    private Cell[,] cells;
+    private int sizeX;
+    private int sizeY;
     private List<int[]> neighbours = new List<int[]>();
     private bool finished = false;
     private int[] currentPoint;
-    public Prims(int x,int y)
+    public Prims(int sX, int sY)
     {
-        initCells(x, y);
+        sizeX = sX;
+        sizeY = sY;
+        cells = new Cell[sY, sX];
+        initCells(Random.Range(0,sX-1),Random.Range(0,sY-1));
     }
 
     public void initCells(int startX,int startY)//Create All Cells Needed
     {
         Cell temp;
-        for (int y=0;y<16;y++)
+        for (int y=0;y<sizeY;y++)
         {
-            for (int x=0;x<16;x++)
+            for (int x=0;x<sizeX;x++)
             {
                 temp = new Cell(true, true, false);
                 cells[y,x] = temp;
             }
         }
-        cells[15,15] = new Cell(true, false, false);
+        cells[sizeY-1,sizeX-1] = new Cell(true, false, false);
         cells[startY, startX] = new Cell(true, true, true);
         currentPoint = new int[] { startY, startX };
     }
@@ -39,7 +44,7 @@ public class Prims
     public List<int[]> findNeighboursOrVisited(int x,int y,bool visited)//Find Neighbours or Visited Nodes around a Node
     {
         List<int[]> ret = new List<int[]>();
-        if (x+1<16 && cells[y,x+1].getVisited()==visited)
+        if (x+1<sizeX && cells[y,x+1].getVisited()==visited)
         {
             ret.Add(new int[] { y, x + 1 });
         }
@@ -47,7 +52,7 @@ public class Prims
         {
             ret.Add(new int[] { y, x - 1 });
         }
-        if (y+1<16 && cells[y+1,x].getVisited()==visited)
+        if (y+1<sizeY && cells[y+1,x].getVisited()==visited)
         {
             ret.Add(new int[] { y + 1, x });
         }
@@ -60,14 +65,7 @@ public class Prims
     public void addToNeighbours(List<int[]> adder)//Add to Neighbour List
     {
         bool alreadyIn = false;
-        //Debug.Log("Neighbours = " + string.Join("",
-        //     new List<int[]>(neighbours)
-        //     .ConvertAll(i => "(X: "+i[1].ToString() +" Y: " +i[0].ToString()+") ")
-        //     .ToArray()));
-        //Debug.Log("Adding = " + string.Join("",
-        //     new List<int[]>(adder)
-        //     .ConvertAll(i => "(X: " + i[1].ToString() + " Y: " + i[0].ToString() + ") ")
-        //     .ToArray()));
+ 
         foreach (int[] num in adder)
         {
             foreach(int[] checker in neighbours)
@@ -84,10 +82,7 @@ public class Prims
             }
             alreadyIn = false;
         }
-        //Debug.Log("Neighbours after adding = " + string.Join("",
-        //     new List<int[]>(neighbours)
-        //     .ConvertAll(i => "(X: " + i[1].ToString() + " Y: " + i[0].ToString() + ") ")
-        //     .ToArray()));
+  
     }
     public void connect(int x, int y, int x1, int y1)//Connect 2 Nodes By removing the appropriate wall
     {
@@ -117,11 +112,7 @@ public class Prims
     }
     public void removeNeighbour(int[] remove)//Remove neighbour specified
     {
-        //Debug.Log("Neighbours before removing= " + string.Join("",
-        //     new List<int[]>(neighbours)
-        //     .ConvertAll(i => "(X: " + i[1].ToString() + " Y: " + i[0].ToString() + ") ")
-        //     .ToArray()));
-        //Debug.Log("removing point = (x: " + remove[1] + " y: " + remove[0] + ")");
+
         List<int[]> temp = new List<int[]>();
         foreach(int[] points in neighbours)
         {
@@ -132,10 +123,6 @@ public class Prims
             }
         }
         neighbours = temp;
-        //Debug.Log("Neighbours after removing= " + string.Join("",
-        //     new List<int[]>(neighbours)
-        //     .ConvertAll(i => "(X: " + i[1].ToString() + " Y: " + i[0].ToString() + ") ")
-        //     .ToArray()));
     }
     public void currentPointUpdate()//Update the currentPoint to the next Node
     {
@@ -175,7 +162,7 @@ public class Prims
     public string getRow(int y)
     {
         string ret = "";
-        for (int x=0;x<16;x++)
+        for (int x=0;x<sizeX;x++)
         {
             ret += getCell(x, y);
         }
@@ -183,23 +170,7 @@ public class Prims
     }
     public void draw()
     {
-        //Debug.Log(" _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _");
-        //Debug.Log("|" + getRow(0));
-        //Debug.Log("|" + getRow(1));
-        //Debug.Log("|" + getRow(2));
-        //Debug.Log("|" + getRow(3));
-        //Debug.Log("|" + getRow(4));
-        //Debug.Log("|" + getRow(5));
-        //Debug.Log("|" + getRow(6));
-        //Debug.Log("|" + getRow(7));
-        //Debug.Log("|" + getRow(8));
-        //Debug.Log("|" + getRow(9));
-        //Debug.Log("|" + getRow(10));
-        //Debug.Log("|" + getRow(11));
-        //Debug.Log("|" + getRow(12));
-        //Debug.Log("|" + getRow(13));
-        //Debug.Log("|" + getRow(14));
-        //Debug.Log("|" + getRow(15));
+
         Debug.Log(" _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _" + "\n" + 
             "I" + getRow(0) + "\n" +
             "I" + getRow(1) + "\n" +

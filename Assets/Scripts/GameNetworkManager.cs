@@ -17,6 +17,7 @@ public class GameNetworkManager : NetworkManager
 
     int mazeSeed;
     public GameObject MazeLoader;
+    GameObject tag;
 
 
     [Server]
@@ -36,24 +37,28 @@ public class GameNetworkManager : NetworkManager
         {   
             totalPlayers++; 
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-            player.name += totalPlayers;
+            //player.name += totalPlayers;
             //Texture s = Resources.Load<Texture>("playerTextures/Player"+ totalPlayers + "_untagged");
             player.GetComponent<Player>().setTextureValue(totalPlayers);
             NetworkServer.AddPlayerForConnection(conn,player);
 
-            if (totalPlayers > 1 && totalPlayers <= maxPlayers){
-                MazeLoader.GetComponent<MazeLoader>().createMazeClient();
-            }
-            
             //test
             powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
             powerUp.GetComponent<Powerup>().spawnPowerUp();
             Debug.Log("PowerUpSpawned");
         }
         if(totalPlayers == maxPlayers){
-        
+            Debug.Log("Total = Max");
+            tag = Instantiate(Resources.Load("Prefabs/Tag")) as GameObject;
+            NetworkServer.Spawn(tag);
+            tag.GetComponent<TagSpawn>().spawnTag();
             timer.startcountDownFunc();
+            //timer.timerIsRunning = true;
             Debug.Log("Timer started");
+            if (timer.getTimeRemaining() == 0.0f){
+                timer.timerIsRunning = false;
+                timer.timerLabel.text = "Game Over";
+            }
         }
 
     }

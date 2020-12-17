@@ -24,7 +24,4 @@ public class Powerup : NetworkBehaviour
         thisPowerUp = possiblePowerUps[value];
     }
 
-
-
-
 }
