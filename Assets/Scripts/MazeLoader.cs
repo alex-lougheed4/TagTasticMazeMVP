@@ -24,6 +24,8 @@ public class MazeLoader : NetworkBehaviour
     [Range(1,200)]//Only allow ranges from 1,200 can be changed
     private int mazeSizeY = 16;//How many cells in the y axis <--Edited in unity by using slider where script is attached to
 
+    public GameObject tag;
+
 
     [SerializeField]
     private Transform wallPrefab = null;
@@ -41,6 +43,7 @@ void createMaze(int oldseed, int newseed)
         //prims.draw(); <-- String Based UI
         var maze = prims.getMaze(); //Retrieve Maze Information
         Draw(maze); //Graphical UI
+        
 
     }
 
@@ -49,6 +52,9 @@ void createMaze(int oldseed, int newseed)
         Debug.Log("Maze Created");
         mazeSeed = Random.Range(0,255);
         createMaze(0, mazeSeed);
+        tag = Instantiate(Resources.Load("Prefabs/Tag")) as GameObject;
+        NetworkServer.Spawn(tag);
+        tag.GetComponent<TagSpawn>().spawnTag();
     }
 
 

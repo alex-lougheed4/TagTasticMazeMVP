@@ -15,8 +15,11 @@ public class Player : NetworkBehaviour{
     
 	[SyncVar(hook = nameof(OnTagChanged))]
     bool hasTag = false;
+
+    bool justTagged;
     float randomPosX;
     float randomPosZ;
+    bool thisPlayerHasPowerup = false;
 
     public void OnTagChanged(bool _, bool nowHasTag)
 	{
@@ -61,7 +64,9 @@ public class Player : NetworkBehaviour{
     void HandleMovement()
 	{
         if(isLocalPlayer)
-		{
+		{   if(thisPlayerHasPowerup){
+            speed = 0.025f;
+        }
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
             Vector3 movement = new Vector3(moveHorizontal * speed,0, moveVertical * speed);
@@ -86,17 +91,29 @@ public class Player : NetworkBehaviour{
             hasTag = true;
 			return;
         }
+        if(collisionInfo.collider.tag == "powerup")
+		{    
+            Debug.Log("Collision with powerup Occured");
+            NetworkServer.Destroy(collisionInfo.gameObject);
+            thisPlayerHasPowerup = true;
+			return;
+        }
 
-        if(collisionInfo.collider.tag == "Player")
+        if(hasTag && !justTagged && collisionInfo.collider.tag == "Player")
 		{
             Debug.Log("Collision with Player occured");
-            if(hasTag)
-			{
-               // Debug.Log(taggedPlayerObject);
-                Debug.Log("if i am tagged player");
-                collisionInfo.gameObject.GetComponent<Player>().hasTag = true;
-				hasTag = false;
+            Debug.Log("if i am tagged player");
+            collisionInfo.gameObject.GetComponent<Player>().hasTag = true;
+			hasTag = false;
+			justTagged = true;
             }
         }
-    }
+    
+
+	[ServerCallback]
+    void OnCollisionExit(Collision collisionInfo)
+	{
+		if(hasTag && justTagged && collisionInfo.collider.tag == "Player")
+			justTagged = false;
+	}
 }

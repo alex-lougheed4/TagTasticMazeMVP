@@ -411,6 +411,7 @@ MonoBehaviour:
   height: 10
   mazeSizeX: 32
   mazeSizeY: 32
+  tag: {fileID: 2576651037393470444, guid: bca5b0ffa72755649950071d788f5dbd, type: 3}
   wallPrefab: {fileID: 4350045985349233109, guid: 3ca6e4efa8c869d48bce4d6e1f6e50f8,
     type: 3}
 --- !u!4 &913860115
@@ -698,7 +699,9 @@ MonoBehaviour:
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 2576651037393470444, guid: bca5b0ffa72755649950071d788f5dbd, type: 3}
+  - {fileID: 792453938660722779, guid: 6781a3c55ada22942b699c5be6bbc8cd, type: 3}
   timer: {fileID: 478883875}
   totalPlayers: 0
   maxPlayers: 2

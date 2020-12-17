@@ -7,7 +7,7 @@ using System.Collections;
 public class Timer : NetworkBehaviour
 {
 
-    [SyncVar(hook = nameof(OnTimeRemainingValueChange))] protected int countDownTimeRemaining = 60; //change value for length of timer
+    [SyncVar(hook = nameof(OnTimeRemainingValueChange))] protected int countDownTimeRemaining = 180; //change value for length of timer
     public void OnTimeRemainingValueChange(int old, int new_Value)
     {
         //After the server changed the remainingTime, this will be called on ALL clients.
