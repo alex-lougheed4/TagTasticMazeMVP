@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Mirror{
 
@@ -10,7 +11,10 @@ public class MenuNetworkScript : MonoBehaviour
 {
 
     NetworkManager manager;
-    public Text ipInputField; //needs inputting in Unity to get access to the input field
+    public GameObject sceneLoader;
+    public GameObject ipInputField;
+    //needs inputting in Unity to get access to the input field
+    
     
 
     void Awake()
@@ -49,26 +53,31 @@ public class MenuNetworkScript : MonoBehaviour
         }
         **/
 
-        void startHostServerClient(){ //Call for host button
+        public void startHostServerClient(){ //Call for host button
             if(!NetworkClient.active){
                 if (Application.platform != RuntimePlatform.WebGLPlayer)
                 {
                     manager.StartHost();
+                    sceneLoader.GetComponent<SceneLoader>().LoadGame(); //WIP
                 }
             }
         }
 
-        void joinClient(){ //call for join with ip button
+        public void joinClient(){ //call for join with ip button
             if(!NetworkClient.active){
                 
                 manager.StartClient();
                 
             }
-            string ipText = ipInputField.text.ToString();
-            manager.networkAddress = ""; //insert ip from textfield here
+            string ipText = ipInputField.GetComponent<TMP_InputField>().text;
+            if (ipText == ""){
+                ipText = "localhost";
+            }
+
+            manager.networkAddress = ipText; //insert ip from textfield here into the networkAddress to connect to
         }
 
-        void startServerOnly(){ //call for starting server only
+        public void startServerOnly(){ //call for starting server only
             if(!NetworkClient.active){
                 if(Application.platform != RuntimePlatform.WebGLPlayer){
                     manager.StartServer();
