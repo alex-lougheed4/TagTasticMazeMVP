@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Mirror{
 
@@ -9,6 +10,8 @@ public class MenuNetworkScript : MonoBehaviour
 {
 
     NetworkManager manager;
+    public Text ipInputField; //needs inputting in Unity to get access to the input field
+    
 
     void Awake()
     {
@@ -61,6 +64,7 @@ public class MenuNetworkScript : MonoBehaviour
                 manager.StartClient();
                 
             }
+            string ipText = ipInputField.text.ToString();
             manager.networkAddress = ""; //insert ip from textfield here
         }
 
