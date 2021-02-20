@@ -20,7 +20,6 @@ public class MenuNetworkScript : MonoBehaviour
     
     public void HostButton() {
         manager.StartHost();
-        manager.ServerChangeScene("Main");   
     } 
 
     public void JoinButton(){
