@@ -28,9 +28,11 @@ public class GameNetworkManager : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
+        Debug.Log("player added to server");
         //base.OnServerAddPlayer(conn);
         GameObject player;
         GameObject powerUp;
+        ClientScene.AddPlayer(conn);
         
 
         if(totalPlayers <=maxPlayers)

@@ -11,50 +11,40 @@ namespace Mirror{
 public class MenuNetworkScript : MonoBehaviour
 {
 
-    NetworkManager manager;
-    public GameObject sceneLoader;
     public GameObject ipInputField;
-    //needs inputting in Unity to get access to the input field
+    NetworkManager manager => GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+    
+    string address;
     
     
+    
+    public void HostButton() {
+        manager.StartHost();
+        manager.ServerChangeScene("Main");   
+    } 
 
-    void Awake()
-    {
-        manager = GetComponent<NetworkManager>();
-    }
-/**       void OnGUI()
-        {
-
-            if (!NetworkClient.isConnected && !NetworkServer.active)
-            {
-                StartButtons();
-            }
-            else
-            {
-                StatusLabels();
-            }
-
-            // client ready
-            if (NetworkClient.isConnected && !ClientScene.ready)
-            {
-                if (GUILayout.Button("Client Ready"))
-                {
-                    ClientScene.Ready(NetworkClient.connection);
-
-                    if (ClientScene.localPlayer == null)
-                    {
-                        ClientScene.AddPlayer(NetworkClient.connection);
-                    }
-                }
-            }
-
-            StopButtons();
-
-            GUILayout.EndArea();
+    public void JoinButton(){
+        address = ipInputField.GetComponent<TMP_InputField>().text;
+        if(address == ""){
+            address = "localhost";
         }
-        **/
+        manager.networkAddress = address;
+        manager.StartClient();
+        manager.ServerChangeScene("Main");
+    }
 
-        public void startHostServerClient(){ //Call for host button
+    public void Update() => ToggleMenu(!NetworkClient.isConnected);
+
+    public void ToggleMenu(bool x){
+        foreach(Transform c in gameObject.transform){
+            c.gameObject.SetActive(x);
+        }
+
+    }
+
+    
+
+        /**public void startHostServerClient(){ //Call for host button
             if(!NetworkClient.active){
                 if (Application.platform != RuntimePlatform.WebGLPlayer)
                 {
@@ -90,6 +80,7 @@ public class MenuNetworkScript : MonoBehaviour
                 }
             }
         }
+        **/
 
 /**
         void StartButtons()
@@ -138,18 +129,6 @@ public class MenuNetworkScript : MonoBehaviour
             }
         }
 
-        void StatusLabels()
-        {
-            // server / client status message
-            if (NetworkServer.active)
-            {
-                GUILayout.Label("Server: active. Transport: " + Transport.activeTransport);
-            }
-            if (NetworkClient.isConnected)
-            {
-                GUILayout.Label("Client: address=" + manager.networkAddress);
-            }
-        }
 
         void StopButtons()
         {
