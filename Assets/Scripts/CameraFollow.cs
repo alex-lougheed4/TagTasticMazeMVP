@@ -21,4 +21,3 @@ public class CameraFollow : NetworkBehaviour
         transform.position = Vector3.Lerp (transform.position,  targetCamPos,smoothing * Time.deltaTime);
     }
 }
-

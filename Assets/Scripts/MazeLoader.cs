@@ -100,6 +100,4 @@ void createMaze(int oldseed, int newseed)
             }
         }
     }
-
- 
 }

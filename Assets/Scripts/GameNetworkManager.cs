@@ -32,7 +32,7 @@ public class GameNetworkManager : NetworkManager
         //base.OnServerAddPlayer(conn);
         GameObject player;
         GameObject powerUp;
-        ClientScene.AddPlayer(conn);
+        
         
 
         if(totalPlayers <=maxPlayers)
@@ -84,6 +84,4 @@ public class GameNetworkManager : NetworkManager
     {
         Debug.Log("Disconnected from Server!");
     }
-
- 
 }
