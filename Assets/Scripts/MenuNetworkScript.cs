@@ -57,8 +57,11 @@ public class MenuNetworkScript : MonoBehaviour
             if(!NetworkClient.active){
                 if (Application.platform != RuntimePlatform.WebGLPlayer)
                 {
+                    Debug.Log("test 1");
                     manager.StartHost();
+                    Debug.Log("test 2");
                     sceneLoader.GetComponent<SceneLoader>().LoadGame(); //WIP
+                    Debug.Log("test 3");
                 }
             }
         }
@@ -75,6 +78,7 @@ public class MenuNetworkScript : MonoBehaviour
             }
 
             manager.networkAddress = ipText; //insert ip from textfield here into the networkAddress to connect to
+            sceneLoader.GetComponent<SceneLoader>().LoadGame();
         }
 
         public void startServerOnly(){ //call for starting server only

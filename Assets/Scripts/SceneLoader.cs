@@ -9,6 +9,7 @@ public class SceneLoader : MonoBehaviour
 	public void LoadGame()
 	{
 		SceneManager.LoadScene("Main");
+		Debug.Log("Loaded to main scene");
 	}
 
 	public void QuitGame()
