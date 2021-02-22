@@ -29,13 +29,12 @@ public class GameNetworkManager : NetworkManager
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         Debug.Log("player added to server");
-        //base.OnServerAddPlayer(conn);
         GameObject player;
         GameObject powerUp;
         
         
 
-        if(totalPlayers <=maxPlayers)
+        if(totalPlayers < maxPlayers)
         {   
             totalPlayers++; 
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
