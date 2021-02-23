@@ -12,11 +12,14 @@ public class MenuNetworkScript : MonoBehaviour
 {
 
     public GameObject ipInputField;
-    NetworkManager manager => GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+    NetworkManager manager;
+    //NetworkManager manager => GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
     
     string address;
     
-    
+    public void Awake(){
+        manager = GetComponent<NetworkManager>();
+    }
     
     public void HostButton() {
         manager.StartHost();
@@ -29,10 +32,10 @@ public class MenuNetworkScript : MonoBehaviour
         }
         manager.networkAddress = address;
         manager.StartClient();
-        manager.ServerChangeScene("Main");
+        //manager.ServerChangeScene("Main");
     }
 
-    public void Update() => ToggleMenu(!NetworkClient.isConnected);
+    /**public void Update() => ToggleMenu(!NetworkClient.isConnected);
 
     public void ToggleMenu(bool x){
         foreach(Transform c in gameObject.transform){
@@ -40,7 +43,8 @@ public class MenuNetworkScript : MonoBehaviour
         }
 
     }
-
+    **/
+    
     
 
         /**public void startHostServerClient(){ //Call for host button

@@ -34,7 +34,7 @@ public class GameNetworkManager : NetworkManager
         
         
 
-        if(totalPlayers < maxPlayers)
+        if(totalPlayers <= maxPlayers)
         {   
             totalPlayers++; 
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
@@ -42,6 +42,7 @@ public class GameNetworkManager : NetworkManager
             //Texture s = Resources.Load<Texture>("playerTextures/Player"+ totalPlayers + "_untagged");
             player.GetComponent<Player>().setTextureValue(totalPlayers);
             NetworkServer.AddPlayerForConnection(conn,player);
+            
 
             //test
             powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
@@ -76,11 +77,13 @@ public class GameNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         Debug.Log("Connected to Server!");
+        base.OnClientConnect(conn);
         
     }
 
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         Debug.Log("Disconnected from Server!");
+        base.OnClientDisconnect(conn);
     }
 }
