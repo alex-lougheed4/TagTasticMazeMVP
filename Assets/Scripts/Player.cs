@@ -5,35 +5,35 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour{
     
-    public Texture[] untaggedPlayerTextures = null;
-    public Texture[] taggedPlayerTextures = null;
+    public Texture[] untaggedPlayerTextures = null; //list of untagged textures 
+    public Texture[] taggedPlayerTextures = null; //list of tagged textures
 
     Texture thisPlayerUntaggedTexture;
-    Texture thisPlayerTaggedTexture;
+    Texture thisPlayerTaggedTexture; 
 
-    public float speed;
+    public float speed; //player's speed multiplier (powerup)
     
-	[SyncVar(hook = nameof(OnTagChanged))]
-    bool hasTag = false;
+	[SyncVar(hook = nameof(OnTagChanged))] //synced value to affect  OnTagChanged when changed
+    bool hasTag = false; //boolean of if the player has the tag
 
-    bool justTagged;
-    float randomPosX;
-    float randomPosZ;
-    bool thisPlayerHasPowerup = false;
+    bool justTagged; //boolean value of if the player was just tagged
+    float randomPosX; //random spawn position of player in x axis
+    float randomPosZ; //random spawn position of player in z axis 
+    bool thisPlayerHasPowerup = false; //boolean of have powerup
 
-    public void OnTagChanged(bool _, bool nowHasTag)
+    public void OnTagChanged(bool _, bool nowHasTag) //function called whenever OnTagChanged is used
 	{
-        if(nowHasTag)
-            GetComponent<MeshRenderer>().material.mainTexture = thisPlayerTaggedTexture;
+        if(nowHasTag) //if they now have the tag
+            GetComponent<MeshRenderer>().material.mainTexture = thisPlayerTaggedTexture; //set their texture to the tagged version
 		else
-	        GetComponent<MeshRenderer>().material.mainTexture = thisPlayerUntaggedTexture;
+	        GetComponent<MeshRenderer>().material.mainTexture = thisPlayerUntaggedTexture; //set their texture to the untagged version
     }
     
-    [SyncVar (hook = nameof(OnTextureValueChange))] protected int textureValue;
+    [SyncVar (hook = nameof(OnTextureValueChange))] protected int textureValue; //syncvar of the texture value changing for each player being added to the server
 
-    public void OnTextureValueChange(int old, int new_)
+    public void OnTextureValueChange(int old, int new_) // attached to textureValue and OnTexture Value Change
     {
-        thisPlayerUntaggedTexture = untaggedPlayerTextures[textureValue-1];
+        thisPlayerUntaggedTexture = untaggedPlayerTextures[textureValue-1]; 
         thisPlayerTaggedTexture = taggedPlayerTextures[textureValue-1];
         GetComponent<MeshRenderer>().material.mainTexture = thisPlayerUntaggedTexture; 
     }

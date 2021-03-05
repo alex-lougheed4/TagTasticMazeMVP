@@ -37,7 +37,7 @@ public class MazeLoader : NetworkBehaviour
     
 void createMaze(int oldseed, int newseed)
 {
-        Random.InitState(newseed);
+        Random.InitState(newseed); //applies the set seed
         Prims prims = new Prims(mazeSizeX,mazeSizeY); //Create Prims Object      
         prims.loop(); //Run Prims Algorithm to Completition
         //prims.draw(); <-- String Based UI
@@ -49,12 +49,12 @@ void createMaze(int oldseed, int newseed)
 
     public override void OnStartServer()
     {
-        Debug.Log("Maze Created");
-        mazeSeed = Random.Range(0,255);
-        createMaze(0, mazeSeed);
-        tag = Instantiate(Resources.Load("Prefabs/Tag")) as GameObject;
-        NetworkServer.Spawn(tag);
-        tag.GetComponent<TagSpawn>().spawnTag();
+        Debug.Log("Maze Created"); //debug statement
+        mazeSeed = Random.Range(0,255); //sets maze seed
+        createMaze(0, mazeSeed); //creates the maze with seed
+        tag = Instantiate(Resources.Load("Prefabs/Tag")) as GameObject; //instantiates (creates) tag
+        NetworkServer.Spawn(tag); //spawns the tag
+        tag.GetComponent<TagSpawn>().spawnTag(); //randomises the tag's position
     }
 
 
