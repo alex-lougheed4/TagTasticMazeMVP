@@ -50,16 +50,18 @@ public class GameNetworkManager : NetworkManager
             powerUp.GetComponent<Powerup>().spawnPowerUp();
             Debug.Log("PowerUpSpawned");
         }
-        if(totalPlayers == maxPlayers){
+        /**if(totalPlayers == maxPlayers){
             Debug.Log("Total = Max");
-            timer.startcountDownFunc();
+            //timer.startcountDownFunc();
             //timer.timerIsRunning = true;
             Debug.Log("Timer started");
             if (timer.getTimeRemaining() == 0.0f){ //needs to be implemented properly
                 timer.timerIsRunning = false;
                 timer.timerLabel.text = "Game Over";
             }
+            
         }
+        **/
 
     }
 
