@@ -52,7 +52,8 @@ public class GameNetworkManager : NetworkManager
         }
         /**if(totalPlayers == maxPlayers){
             Debug.Log("Total = Max");
-            //timer.startcountDownFunc();
+            timer = new Timer();
+            //timer.startcountDownFunc(); // this will cause a problem if not handled correctly
             //timer.timerIsRunning = true;
             Debug.Log("Timer started");
             if (timer.getTimeRemaining() == 0.0f){ //needs to be implemented properly
