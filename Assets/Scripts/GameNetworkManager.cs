@@ -60,6 +60,7 @@ public class GameNetworkManager : NetworkManager
             if (timer.getTimeRemaining() == 0.0f){ //needs to be implemented properly
                 timer.timerIsRunning = false;
                 timer.timerLabel.text = "Game Over";
+                
             }
             
         }

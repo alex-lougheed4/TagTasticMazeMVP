@@ -78,6 +78,10 @@ public class Player : NetworkBehaviour{
     void Update()
 	{
         HandleMovement();
+        
+        if(Input.GetKeyDown("escape")){ //close game if escape is pressed, could do with a canvas to check if they are sure they want to quit over the game 
+            Application.Quit();
+        }
     }
 
     
