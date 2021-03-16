@@ -15,6 +15,7 @@ public class MenuNetworkScript : MonoBehaviour
     NetworkManager manager;
     //NetworkManager manager => GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
     
+    string baseServerAddress;
     string address;
     
     public void Awake(){
@@ -33,6 +34,12 @@ public class MenuNetworkScript : MonoBehaviour
         manager.networkAddress = address;
         manager.StartClient();
         //manager.ServerChangeScene("Main");
+    }
+
+    public void StartButton(){ //called when start game is clicked
+        baseServerAddress = "localhost";//insert the ip for the main server here
+        manager.networkAddress = baseServerAddress;
+        manager.StartClient();
     }
 
     /**public void Update() => ToggleMenu(!NetworkClient.isConnected);

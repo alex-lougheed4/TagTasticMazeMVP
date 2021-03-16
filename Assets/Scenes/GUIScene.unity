@@ -277,8 +277,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: LoadGame
+      - m_Target: {fileID: 1850244784}
+        m_MethodName: StartButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4273,7 +4273,7 @@ MonoBehaviour:
   - {fileID: 792453938660722779, guid: 6781a3c55ada22942b699c5be6bbc8cd, type: 3}
   timer: {fileID: 0}
   totalPlayers: 0
-  maxPlayers: 2
+  maxPlayers: 1
   MazeLoader: {fileID: 0}
 --- !u!114 &1850244781
 MonoBehaviour:

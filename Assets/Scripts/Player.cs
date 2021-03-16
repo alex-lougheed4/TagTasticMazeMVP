@@ -20,6 +20,7 @@ public class Player : NetworkBehaviour{
     float randomPosX; //random spawn position of player in x axis
     float randomPosZ; //random spawn position of player in z axis 
     bool thisPlayerHasPowerup = false; //boolean of have powerup
+    bool HasBreakWallPowerUp = false;
 
     public void OnTagChanged(bool _, bool nowHasTag) //function called whenever OnTagChanged is used
 	{
@@ -78,7 +79,7 @@ public class Player : NetworkBehaviour{
     void Update()
 	{
         HandleMovement();
-        
+
         if(Input.GetKeyDown("escape")){ //close game if escape is pressed, could do with a canvas to check if they are sure they want to quit over the game 
             Application.Quit();
         }
@@ -102,6 +103,12 @@ public class Player : NetworkBehaviour{
             thisPlayerHasPowerup = true;
 			return;
         }
+        //if((collisionInfo.collider.tag == "wallTag") && (HasBreakWallPowerUp)){              EDIT POWERUP SAVE STATUS TO HAS POWER UP TYPE TO CHECK BEFORE BREAKING WALL
+        //    Debug.Log("Collided with wall");
+        //    NetworkServer.Destroy(collisionInfo.gameObject);
+
+
+        //}
 
         if(hasTag && !justTagged && collisionInfo.collider.tag == "Player")
 		{

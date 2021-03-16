@@ -55,12 +55,14 @@ public class GameNetworkManager : NetworkManager
             Debug.Log("Total = Max");
             timer = GameObject.FindObjectOfType<Timer>();
             timer.startcountDownFunc(); 
+            Time.timeScale = 1.0f; //start time when lobby is full
             timer.timerIsRunning = true;
             Debug.Log("Timer started");
-            if (timer.getTimeRemaining() == 0.0f){ //needs to be implemented properly
+            if (timer.getTimeRemaining() <= 0.0f){ //needs to be implemented properly
                 timer.timerIsRunning = false;
                 timer.timerLabel.text = "Game Over";
-                
+                Time.timeScale = 0.0f; //freeze time after gameover
+
             }
             
         }
@@ -72,6 +74,7 @@ public class GameNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         Debug.Log("Server Started!");
+        Time.timeScale = 0.0f; //start server with time frozen
         
     }
 
