@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>This class contains all information about the player and is connected to the prefab, this handles player controls, textures etc </summary>
+///
+///<author email="190045601@aston.ac.uk">Alexander Lougheed </author>
 public class Player : NetworkBehaviour{
     
     public Texture[] untaggedPlayerTextures = null; //list of untagged textures 

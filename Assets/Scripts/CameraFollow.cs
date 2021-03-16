@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>This class contains the method necessary to "attach" the camera to the user's player and smooths the camera movement </summary>
+///
+///<author email="190045601@aston.ac.uk">Alexander Lougheed </author>
+
 public class CameraFollow : NetworkBehaviour
 {
     public Transform target; //what to follow

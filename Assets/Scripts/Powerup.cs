@@ -1,13 +1,17 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+
+///<summary>This class refers to the powerup object and it's various attributes e.g the type of powerup </summary>
+///
+///<author email="190045601@aston.ac.uk">Alexander Lougheed </author>
 
 public class Powerup : NetworkBehaviour
 {
     public GameObject[] possiblePowerupSpawnpoints = new GameObject[4];
     
-    string[] possiblePowerUps = {"speedUp"};
+    string[] possiblePowerUps = {"speedUp", "breakWall"};
     
     string thisPowerUp;
 

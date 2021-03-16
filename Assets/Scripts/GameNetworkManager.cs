@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
 
+///<summary>This class refers the the Network manager which controls the multiplayer aspect of the game with it's functions </summary>
+///
+///<author email="190045601@aston.ac.uk">Alexander Lougheed </author>
+
 public class GameNetworkManager : NetworkManager
 {
     string playerMaterial;

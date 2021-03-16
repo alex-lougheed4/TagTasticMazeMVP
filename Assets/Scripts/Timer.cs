@@ -4,6 +4,10 @@ using UnityEngine.UI;
 using Mirror;
 using System.Collections;
 
+///<summary>This class refers to the timer aspect of the system, controlling how a timer is created and it's method to count down etc </summary>
+///
+///<author email="190045601@aston.ac.uk">Alexander Lougheed </author>
+
 public class Timer : NetworkBehaviour
 {
     [SyncVar(hook = nameof(OnTimeRemainingValueChange))]

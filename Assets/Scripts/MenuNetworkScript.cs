@@ -5,6 +5,10 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+///<summary>This class is used to give functionality to the GUI allowing the user to make meaningful use of the GUI in reference to the multiplayer aspect of the solution </summary>
+///
+///<author email="190045601@aston.ac.uk">Alexander Lougheed </author>
+
 namespace Mirror{
 
 

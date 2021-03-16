@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+///<summary>This class refers to the tag and controls the tag's spawn position which can be randomized  </summary>
+///
+///<author email="190045601@aston.ac.uk">Alexander Lougheed </author>
+
 public class TagSpawn : MonoBehaviour
 {
     
