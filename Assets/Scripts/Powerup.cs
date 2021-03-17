@@ -11,7 +11,8 @@ public class Powerup : NetworkBehaviour
 {
     public GameObject[] possiblePowerupSpawnpoints = new GameObject[4];
     
-    string[] possiblePowerUps = {"speedUp", "breakWall"};
+    //string[] possiblePowerUps = {"speedUp", "breakWall"};
+    string[] possiblePowerUps = {"breakWall"}; //testing
     
     string thisPowerUp;
 
@@ -23,9 +24,11 @@ public class Powerup : NetworkBehaviour
         transform.position = possiblePowerupSpawnpoints[spawnPositionValue].transform.position;
     }
     
-    void choosePowerUp(){
+    public string choosePowerUp(){
         int value = Random.Range(0, possiblePowerUps.Length);
         thisPowerUp = possiblePowerUps[value];
+        Debug.Log(thisPowerUp);
+        return thisPowerUp;
     }
 
 }

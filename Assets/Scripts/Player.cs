@@ -22,8 +22,10 @@ public class Player : NetworkBehaviour{
     bool justTagged; //boolean value of if the player was just tagged
     float randomPosX; //random spawn position of player in x axis
     float randomPosZ; //random spawn position of player in z axis 
-    bool thisPlayerHasPowerup = false; //boolean of have powerup
-    bool HasBreakWallPowerUp = false;
+    
+    //bool thisPlayerHasPowerup = false; //boolean of have powerup
+    
+    string powerUpType;
 
     public void OnTagChanged(bool _, bool nowHasTag) //function called whenever OnTagChanged is used
 	{
@@ -68,7 +70,7 @@ public class Player : NetworkBehaviour{
     void HandleMovement()
 	{
         if(isLocalPlayer)
-		{   if(thisPlayerHasPowerup){
+		{   if(powerUpType == "speedUp"){
             speed = 0.025f;
         }
             float moveHorizontal = Input.GetAxis("Horizontal");
@@ -102,16 +104,26 @@ public class Player : NetworkBehaviour{
         if(collisionInfo.collider.tag == "powerup")
 		{    
             Debug.Log("Collision with powerup Occured");
+            
             NetworkServer.Destroy(collisionInfo.gameObject);
-            thisPlayerHasPowerup = true;
+            powerUpType = collisionInfo.gameObject.GetComponent<Powerup>().choosePowerUp(); //get access to the type of power up through powerup.choosePowerUp(); and set to string
+            Debug.Log(powerUpType);
+            //thisPlayerHasPowerup = true;
 			return;
         }
-        //if((collisionInfo.collider.tag == "wallTag") && (HasBreakWallPowerUp)){              EDIT POWERUP SAVE STATUS TO HAS POWER UP TYPE TO CHECK BEFORE BREAKING WALL
-        //    Debug.Log("Collided with wall");
-        //    NetworkServer.Destroy(collisionInfo.gameObject);
-
-
-        //}
+        if((collisionInfo.collider.tag == "WallTag")){  //change HasBreakWallPowerUp to powerUpType == "breakWall"
+            Debug.Log("Collided with wall");
+            if(powerUpType == "breakWall"){ //could be constantly touching the wall hence the problem
+                int wallBreakCount = 0;
+                Debug.Log("Breaking Wall...");
+                NetworkServer.Destroy(collisionInfo.gameObject);
+                wallBreakCount++;
+                Debug.Log("Wall Broken");
+                if(wallBreakCount >= 1){
+                    powerUpType = "";
+                }
+            }
+        }
 
         if(hasTag && !justTagged && collisionInfo.collider.tag == "Player")
 		{
@@ -124,10 +136,11 @@ public class Player : NetworkBehaviour{
         }
     
 
-	[ServerCallback]
     void OnCollisionExit(Collision collisionInfo)
 	{
 		if(hasTag && justTagged && collisionInfo.collider.tag == "Player")
 			justTagged = false;
 	}
 }
+
+
