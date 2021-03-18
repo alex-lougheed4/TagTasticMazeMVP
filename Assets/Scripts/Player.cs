@@ -22,6 +22,8 @@ public class Player : NetworkBehaviour{
     bool justTagged; //boolean value of if the player was just tagged
     float randomPosX; //random spawn position of player in x axis
     float randomPosZ; //random spawn position of player in z axis 
+
+    int wallBreakCount = 0;
     
     //bool thisPlayerHasPowerup = false; //boolean of have powerup
     
@@ -83,6 +85,9 @@ public class Player : NetworkBehaviour{
 
     void Update()
 	{
+        if (!hasAuthority){
+            return;
+        } 
         HandleMovement();
 
         if(Input.GetKeyDown("escape")){ //close game if escape is pressed, could do with a canvas to check if they are sure they want to quit over the game 
@@ -104,19 +109,20 @@ public class Player : NetworkBehaviour{
         if(collisionInfo.collider.tag == "powerup")
 		{    
             Debug.Log("Collision with powerup Occured");
-            
-            NetworkServer.Destroy(collisionInfo.gameObject);
             powerUpType = collisionInfo.gameObject.GetComponent<Powerup>().choosePowerUp(); //get access to the type of power up through powerup.choosePowerUp(); and set to string
             Debug.Log(powerUpType);
+            NetworkServer.Destroy(collisionInfo.gameObject);
+            
+            
             //thisPlayerHasPowerup = true;
 			return;
         }
         if((collisionInfo.collider.tag == "WallTag")){  //change HasBreakWallPowerUp to powerUpType == "breakWall"
             Debug.Log("Collided with wall");
             if(powerUpType == "breakWall"){ //could be constantly touching the wall hence the problem
-                int wallBreakCount = 0;
                 Debug.Log("Breaking Wall...");
-                NetworkServer.Destroy(collisionInfo.gameObject);
+                Debug.Log(collisionInfo.collider.gameObject.name);
+                NetworkServer.Destroy(collisionInfo.gameObject); //wall not breaking 17/03/21
                 wallBreakCount++;
                 Debug.Log("Wall Broken");
                 if(wallBreakCount >= 1){
