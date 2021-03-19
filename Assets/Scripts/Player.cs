@@ -127,7 +127,7 @@ public class Player : NetworkBehaviour{
                 
                 int indexOfWall = mazeLoader.GetComponent<MazeLoader>().mazeWalls.IndexOf(collisionInfo.collider.gameObject.transform);
                 wallDestroy(indexOfWall);
-                NetworkServer.Destroy(collisionInfo.gameObject); //wall not breaking 17/03/21
+                NetworkServer.Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[indexOfWall].gameObject); //wall not breaking 17/03/21
                 wallBreakCount++;
                 Debug.Log("Wall Broken");
                 if(wallBreakCount >= 1){
