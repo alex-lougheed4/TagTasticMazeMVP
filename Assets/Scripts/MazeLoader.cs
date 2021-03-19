@@ -32,6 +32,8 @@ public class MazeLoader : NetworkBehaviour
     [SerializeField]
     private Transform wallPrefab = null;
 
+    public List<Transform> mazeWalls = new List<Transform>(); //list of walls which will be the exact same as all clients due to the use of the seed
+
 
     [SyncVar(hook = nameof(createMaze))] int mazeSeed = -1;
 
@@ -76,6 +78,7 @@ void createMaze(int oldseed, int newseed)
                     var topWall = Instantiate(wallPrefab, transform) as Transform;
                     topWall.position = position + new Vector3(0, 0, size / 2);
                     topWall.localScale = new Vector3(size, topWall.localScale.y, topWall.localScale.z);
+                    mazeWalls.Add(topWall); //add the wall to the local list which will be created the exact same across all clients
 
                 }
                 if (i == 0)
@@ -84,6 +87,7 @@ void createMaze(int oldseed, int newseed)
                     leftWall.position = position + new Vector3(-size / 2, 0, 0);
                     leftWall.localScale = new Vector3(size, leftWall.localScale.y, leftWall.localScale.z);
                     leftWall.eulerAngles = new Vector3(0, 90, 0);
+                    mazeWalls.Add(leftWall);
                 }
                 if (maze[j, i].getRight() || i==mazeSizeX - 1)
                 {
@@ -91,6 +95,7 @@ void createMaze(int oldseed, int newseed)
                     rightWall.position = position + new Vector3(+size / 2, 0, 0);
                     rightWall.localScale = new Vector3(size, rightWall.localScale.y, rightWall.localScale.z);
                     rightWall.eulerAngles = new Vector3(0, 90, 0);
+                    mazeWalls.Add(rightWall);
 
                 }
                 if (maze[j, i].getBottom() || j==mazeSizeY - 1)
@@ -98,6 +103,7 @@ void createMaze(int oldseed, int newseed)
                     var bottomWall = Instantiate(wallPrefab, transform) as Transform;
                     bottomWall.position = position + new Vector3(0, 0, -size / 2);
                     bottomWall.localScale = new Vector3(size, bottomWall.localScale.y, bottomWall.localScale.z);
+                    mazeWalls.Add(bottomWall);
                 }
             }
         }

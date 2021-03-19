@@ -29,6 +29,8 @@ public class Player : NetworkBehaviour{
     
     string powerUpType;
 
+    public GameObject mazeLoader;
+
     public void OnTagChanged(bool _, bool nowHasTag) //function called whenever OnTagChanged is used
 	{
         if(nowHasTag) //if they now have the tag
@@ -122,6 +124,9 @@ public class Player : NetworkBehaviour{
             if(powerUpType == "breakWall"){ //could be constantly touching the wall hence the problem
                 Debug.Log("Breaking Wall...");
                 Debug.Log(collisionInfo.collider.gameObject.name);
+                
+                int indexOfWall = mazeLoader.GetComponent<MazeLoader>().mazeWalls.IndexOf(collisionInfo.collider.gameObject.transform);
+                wallDestroy(indexOfWall);
                 NetworkServer.Destroy(collisionInfo.gameObject); //wall not breaking 17/03/21
                 wallBreakCount++;
                 Debug.Log("Wall Broken");
@@ -140,6 +145,11 @@ public class Player : NetworkBehaviour{
 			justTagged = true;
             }
         }
+
+    [ClientRpc]
+    void wallDestroy(int wallIndex){
+        NetworkServer.Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[wallIndex].gameObject);
+    }
     
 
     void OnCollisionExit(Collision collisionInfo)
