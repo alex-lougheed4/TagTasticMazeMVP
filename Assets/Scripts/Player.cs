@@ -23,7 +23,7 @@ public class Player : NetworkBehaviour{
     float randomPosX; //random spawn position of player in x axis
     float randomPosZ; //random spawn position of player in z axis 
 
-    int wallBreakCount = 0;
+    //int wallBreakCount = 0;
     
     //bool thisPlayerHasPowerup = false; //boolean of have powerup
     
@@ -57,7 +57,7 @@ public class Player : NetworkBehaviour{
 
     public override void OnStartLocalPlayer()
     {
-
+        mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
         generateRandomPositions();
         if((randomPosX != 0) || (randomPosZ != 0)){
             transform.position = new Vector3(randomPosX,0,randomPosZ);
@@ -126,13 +126,12 @@ public class Player : NetworkBehaviour{
                 Debug.Log(collisionInfo.collider.gameObject.name);
                 
                 int indexOfWall = mazeLoader.GetComponent<MazeLoader>().mazeWalls.IndexOf(collisionInfo.collider.gameObject.transform);
+                Debug.Log(indexOfWall);
                 wallDestroy(indexOfWall);
-                NetworkServer.Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[indexOfWall].gameObject); //wall not breaking 17/03/21
-                wallBreakCount++;
+                Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[indexOfWall].gameObject); //wall not breaking 17/03/21
                 Debug.Log("Wall Broken");
-                if(wallBreakCount >= 1){
-                    powerUpType = "";
-                }
+                powerUpType = "";
+                
             }
         }
 
@@ -148,7 +147,9 @@ public class Player : NetworkBehaviour{
 
     [ClientRpc]
     void wallDestroy(int wallIndex){
-        NetworkServer.Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[wallIndex].gameObject);
+        if (isClientOnly ){
+        Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[wallIndex].gameObject);
+        }
     }
     
 
