@@ -138,8 +138,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: a5c2e23a0ba8d564896ff7ec0a33bce1, type: 3}
   - {fileID: 2800000, guid: 478f3607077d29b48b9c9ec62843a348, type: 3}
   speed: 0.01
-  mazeLoader: {fileID: 5166866013384924778, guid: 970dff86d2df3094ebfe23d477906ada,
-    type: 3}
+  mazeLoader: {fileID: 0}
 --- !u!114 &7941598322841823472
 MonoBehaviour:
   m_ObjectHideFlags: 0

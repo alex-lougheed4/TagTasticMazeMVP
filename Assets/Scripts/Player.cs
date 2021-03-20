@@ -55,6 +55,12 @@ public class Player : NetworkBehaviour{
         textureValue = value;
     }
 
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
+    }
+
     public override void OnStartLocalPlayer()
     {
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
