@@ -12,11 +12,14 @@ public class CameraFollow : NetworkBehaviour
     public Transform target; //what to follow
     public float smoothing = 5f; //camera speed
 
+    AudioSource audioSource;
     Vector3 offset; //offset of camera and player
 
     void Start() //on start
     {
         offset.y = 15.0f; //set offset
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = PlayerPrefs.GetFloat("volume");
     }
 
     void FixedUpdate() //every update

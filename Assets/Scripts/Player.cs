@@ -140,7 +140,7 @@ public class Player : NetworkBehaviour{
                 Debug.Log(indexOfWall);
                 wallDestroy(indexOfWall);
                 Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[indexOfWall].gameObject); //wall not breaking 17/03/21
-                Debug.Log("Wall Broken");
+                Debug.Log("Server Wall Broken: " + indexOfWall);
                 powerUpType = "";
                 
             }
@@ -161,6 +161,7 @@ public class Player : NetworkBehaviour{
         if (isClientOnly ){
             Debug.Log(wallIndex);
             Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[wallIndex].gameObject);
+            Debug.Log("Client Wall Broken: " + wallIndex);
         }
     }
     

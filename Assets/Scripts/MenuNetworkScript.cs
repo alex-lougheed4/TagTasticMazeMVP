@@ -46,6 +46,10 @@ public class MenuNetworkScript : MonoBehaviour
         manager.StartClient();
     }
 
+    public void startServerOnlyButton(){
+        manager.StartServer();
+    }
+
     /**public void Update() => ToggleMenu(!NetworkClient.isConnected);
 
     public void ToggleMenu(bool x){
