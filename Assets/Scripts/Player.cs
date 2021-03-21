@@ -61,6 +61,11 @@ public class Player : NetworkBehaviour{
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
     }
 
+    public override void OnStartClient() // is this needed?
+    {
+        base.OnStartClient();
+        mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
+    }
     public override void OnStartLocalPlayer()
     {
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
@@ -154,7 +159,8 @@ public class Player : NetworkBehaviour{
     [ClientRpc]
     void wallDestroy(int wallIndex){
         if (isClientOnly ){
-        Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[wallIndex].gameObject);
+            Debug.Log(wallIndex);
+            Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[wallIndex].gameObject);
         }
     }
     

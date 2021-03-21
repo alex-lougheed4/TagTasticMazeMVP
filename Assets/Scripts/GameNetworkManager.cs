@@ -21,6 +21,8 @@ public class GameNetworkManager : NetworkManager
 
     int mazeSeed;
     public GameObject MazeLoader;
+
+    bool gameStarted = false;
     
 
 
@@ -56,22 +58,30 @@ public class GameNetworkManager : NetworkManager
         }
 
         if(totalPlayers == maxPlayers){ 
+            gameStarted = true;
             Debug.Log("Total = Max");
             timer = GameObject.FindObjectOfType<Timer>();
             timer.startcountDownFunc(); 
-            Time.timeScale = 1.0f; //start time when lobby is full
+            Time.timeScale = 1.0f; //start time when lobby is full -- works
             timer.timerIsRunning = true;
             Debug.Log("Timer started");
-            if (timer.getTimeRemaining() <= 0.0f){ //needs to be implemented properly
-                timer.timerIsRunning = false;
-                timer.timerLabel.text = "Game Over";
-                Time.timeScale = 0.0f; //freeze time after gameover
 
-            }
             
         }
         
         
+
+    }
+
+    public void FixedUpdate(){
+        if(gameStarted){
+            if (timer.getTimeRemaining() <= 0.0f){ 
+                Debug.Log("Timer Ended");
+                timer.timerIsRunning = false;
+                timer.timerLabel.text = "Game Over";
+                Time.timeScale = 0.0f; //freeze time after gameover
+            }
+        }
 
     }
 
