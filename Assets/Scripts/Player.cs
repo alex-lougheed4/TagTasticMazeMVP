@@ -30,7 +30,7 @@ public class Player : NetworkBehaviour{
     string powerUpType;
 
     public GameObject mazeLoader;
-
+ 
     public void OnTagChanged(bool _, bool nowHasTag) //function called whenever OnTagChanged is used
 	{
         if(nowHasTag) //if they now have the tag
@@ -103,9 +103,6 @@ public class Player : NetworkBehaviour{
         } 
         HandleMovement();
 
-        if(Input.GetKeyDown("escape")){ //close game if escape is pressed, could do with a canvas to check if they are sure they want to quit over the game 
-            Application.Quit();
-        }
     }
 
     
