@@ -50,14 +50,22 @@ public class GameNetworkManager : NetworkManager
             NetworkServer.AddPlayerForConnection(conn,player);
             
 
-            //test
+            /**
             powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
             NetworkServer.Spawn(powerUp);
             powerUp.GetComponent<Powerup>().spawnPowerUp();
             Debug.Log("PowerUpSpawned");
+            **/
         }
 
         if(totalPlayers == maxPlayers){ 
+
+            powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
+            NetworkServer.Spawn(powerUp);
+            powerUp.GetComponent<Powerup>().spawnPowerUp();
+            Debug.Log("PowerUpSpawned");
+
+
             gameStarted = true;
             Debug.Log("Total = Max");
             timer = GameObject.FindObjectOfType<Timer>();

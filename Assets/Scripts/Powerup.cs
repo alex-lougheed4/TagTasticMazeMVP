@@ -11,8 +11,8 @@ public class Powerup : NetworkBehaviour
 {
     public GameObject[] possiblePowerupSpawnpoints = new GameObject[4];
     
-    //string[] possiblePowerUps = {"speedUp", "breakWall"};
-    string[] possiblePowerUps = {"breakWall"}; //testing
+    string[] possiblePowerUps = {"speedUp", "breakWall"};
+    //string[] possiblePowerUps = {"breakWall"}; //testing
     
     string thisPowerUp;
 
