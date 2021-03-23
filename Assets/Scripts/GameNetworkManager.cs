@@ -24,7 +24,7 @@ public class GameNetworkManager : NetworkManager
 
     bool gameStarted = false;
     bool gameEnded = false;
-   // public List<Player> playersList { get; } = new List<Player>();
+    public List<Player> playersList { get; } = new List<Player>();
     
 
 
