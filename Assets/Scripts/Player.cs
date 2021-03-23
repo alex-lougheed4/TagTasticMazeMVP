@@ -22,14 +22,13 @@ public class Player : NetworkBehaviour{
     bool justTagged; //boolean value of if the player was just tagged
     float randomPosX; //random spawn position of player in x axis
     float randomPosZ; //random spawn position of player in z axis 
-
-    //int wallBreakCount = 0;
-    
-    //bool thisPlayerHasPowerup = false; //boolean of have powerup
     
     string powerUpType;
 
+    string username;
+
     public GameObject mazeLoader;
+    bool winnerUploaded = false;
 
     private GameNetworkManager room;
         private GameNetworkManager Room
@@ -76,6 +75,7 @@ public class Player : NetworkBehaviour{
     {
         base.OnStartClient();
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
+        username = PlayerPrefs.GetString("username");
         Room.playersList.Add(this);
     }
     public override void OnStartLocalPlayer()
@@ -87,6 +87,7 @@ public class Player : NetworkBehaviour{
         }
 
         Camera.main.GetComponent<CameraFollow>().target=transform; //Fix camera on "me"
+        Debug.Log(speed);
     }
 
     public void generateRandomPositions(){
@@ -115,12 +116,14 @@ public class Player : NetworkBehaviour{
         } 
         HandleMovement();
         if(hasAuthority){ //checks if what it's running on has authority ie is the server
-            if(Room.getHasGameEnded()){ //checks if the game has ended bool in the room is true
+            if((Room.getHasGameEnded())&& (!winnerUploaded)){ //checks if the game has ended bool in the room is true
                foreach (Player p in Room.playersList){
-                   if(p.hasTag){
-                       //call leaderboard push function
-                   }
-               }
+                    if(p.hasTag){
+                        pushWinnerToLeaderboaord(p.username); //call leaderboard push function
+                        Debug.Log("winner's username: " + p.username);
+                        winnerUploaded = true;
+                    }
+                }
             }
             
         }
@@ -128,8 +131,8 @@ public class Player : NetworkBehaviour{
     }
 
     [Server]
-    void pushWinnerToLeaderboaord(){
-
+    void pushWinnerToLeaderboaord(string userName){
+        FindObjectOfType<LeaderboardScript>().UploadWinner(userName);
     }
 
     

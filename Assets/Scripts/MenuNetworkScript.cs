@@ -16,6 +16,7 @@ public class MenuNetworkScript : MonoBehaviour
 {
 
     public GameObject ipInputField;
+    public GameObject usernameInputField;
     NetworkManager manager;
     //NetworkManager manager => GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
     
@@ -27,6 +28,7 @@ public class MenuNetworkScript : MonoBehaviour
     }
     
     public void HostButton() {
+        setUsername();
         manager.StartHost();
     } 
 
@@ -37,13 +39,14 @@ public class MenuNetworkScript : MonoBehaviour
         }
         manager.networkAddress = address;
         manager.StartClient();
-        //manager.ServerChangeScene("Main");
+        setUsername();
     }
 
     public void StartButton(){ //called when start game is clicked
         baseServerAddress = "localhost";//insert the ip for the main server here
         manager.networkAddress = baseServerAddress;
         manager.StartClient();
+        setUsername();
     }
 
     public void startServerOnlyButton(){
@@ -52,6 +55,13 @@ public class MenuNetworkScript : MonoBehaviour
 
     public void quitButton(){
         Application.Quit();
+    }
+
+    public void setUsername(){
+        string username = usernameInputField.GetComponent<TMP_InputField>().text;
+        Debug.Log("Username at GUI input: " + username);
+        PlayerPrefs.SetString("username",username);
+        PlayerPrefs.Save();
     }
 
     /**public void Update() => ToggleMenu(!NetworkClient.isConnected);

@@ -6,14 +6,15 @@ using UnityEngine;
 public class LeaderboardScript : MonoBehaviour
 {
 
-    const string privateCode = "luTL-dhEpEeq83598DpGVwZFPy8mgNGU6fllF3Y0Wg_A"; 
+    const string privateCode = "x69VF7tpq063ZGkeNLClAAOLKpdA1oA0-xPFQMeKgNjw"; 
     const string publicCode = "6059c8738f40bb473467e4c6";
     const string webURL = "http://dreamlo.com/lb/"; //Declares Constants
     int currentWins;
+    string username;
 
-    public void UploadWinner(){
-        string username = ""; //get player username
-        AddNewWin(username);
+    public void UploadWinner(string username){
+        this.username = username;
+        AddNewWin(this.username);
     }
 
     public void AddNewWin(string username){
@@ -21,6 +22,9 @@ public class LeaderboardScript : MonoBehaviour
     }
 
     IEnumerator UploadNewWin(string username){
+        downloadCurrentWins();
+        Debug.Log("username: "+ username);
+        Debug.Log("current wins: " + currentWins);
         WWW WWW = new WWW(webURL + privateCode + "/add/" + WWW.EscapeURL(username) + "/" + currentWins+1);
         yield return WWW;
 
@@ -33,21 +37,26 @@ public class LeaderboardScript : MonoBehaviour
     }
 
     IEnumerator downloadCurrentWins(){
-        string username = ""; //get player username
+        string username = this.username; //get player username
         WWW WWW = new WWW(webURL + publicCode + "/pipe-get/" + username);
         yield return WWW;
 
         if(string.IsNullOrEmpty(WWW.error)){
             Debug.Log("CurrentWins Downloaded");
-            SaveHighScores(WWW.text);
+            SaveScore(WWW.text);
         }
         else{
             Debug.Log("Error Downloading: " + WWW.error);
         }
     }
 
-    public void SaveHighScores(string textStream){
-        currentWins = int.Parse(textStream);
+    public void SaveScore(string textStream){
+        if(textStream == null){
+            currentWins = 0;
+        }
+        else{
+            currentWins = int.Parse(textStream);
+        }
     }
  
 
