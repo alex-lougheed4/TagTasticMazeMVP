@@ -23,6 +23,8 @@ public class GameNetworkManager : NetworkManager
     public GameObject MazeLoader;
 
     bool gameStarted = false;
+    bool gameEnded = false;
+   // public List<Player> playersList { get; } = new List<Player>();
     
 
 
@@ -86,11 +88,16 @@ public class GameNetworkManager : NetworkManager
             if (timer.getTimeRemaining() <= 0.0f){ 
                 Debug.Log("Timer Ended");
                 timer.timerIsRunning = false;
+                gameEnded = true;
                 timer.timerLabel.text = "Game Over";
                 Time.timeScale = 0.0f; //freeze time after gameover
             }
         }
 
+    }
+
+    public bool getHasGameEnded(){
+        return gameEnded;
     }
 
     public override void OnStartServer()

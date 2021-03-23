@@ -30,6 +30,17 @@ public class Player : NetworkBehaviour{
     string powerUpType;
 
     public GameObject mazeLoader;
+
+    private GameNetworkManager room;
+    /**private GameNetworkManager Room
+    {
+        get
+        {
+            if (room != null) { return room; }
+            return room = NetworkManager.singleton as GameNetworkManager;
+        }
+    }
+    **/
  
     public void OnTagChanged(bool _, bool nowHasTag) //function called whenever OnTagChanged is used
 	{
@@ -65,6 +76,7 @@ public class Player : NetworkBehaviour{
     {
         base.OnStartClient();
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
+        //Room.playersList.Add(this);
     }
     public override void OnStartLocalPlayer()
     {
@@ -102,6 +114,21 @@ public class Player : NetworkBehaviour{
             return;
         } 
         HandleMovement();
+ /**       if(hasAuthority){ //checks if what it's running on has authority ie is the server
+            if(Room.getHasGameEnded()){ //checks if the game has ended bool in the room is true
+               for (Player player : Room.playersList){
+                   if(player.hasTag){
+                       //call leaderboard push function
+                   }
+               }
+            }
+            
+        }**/
+
+    }
+
+    [Server]
+    void pushWinnerToLeaderboaord(){
 
     }
 
