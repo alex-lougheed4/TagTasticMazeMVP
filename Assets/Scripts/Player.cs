@@ -99,7 +99,7 @@ public class Player : NetworkBehaviour{
 	{
         if(isLocalPlayer)
 		{   if(powerUpType == "speedUp"){
-            speed = 0.025f;
+            speed = 0.015f;
         }
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
