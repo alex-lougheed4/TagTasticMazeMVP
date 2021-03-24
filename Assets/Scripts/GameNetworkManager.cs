@@ -89,6 +89,7 @@ public class GameNetworkManager : NetworkManager
                 endGame();
                 Debug.Log("Timer Ended");
                 timer.timerIsRunning = false;
+                timer.gameEnded = true;
                 gameEnded = true;
                 timer.timerLabel.text = "Game Over";
                 Time.timeScale = 0.0f; //freeze time after gameover
@@ -101,8 +102,9 @@ public class GameNetworkManager : NetworkManager
     void endGame(){
         Debug.Log("Timer Ended");
         timer.timerIsRunning = false;
+        timer.gameEnded = true;
         gameEnded = true;
-        timer.timerLabel.text = "Game Over";
+        //timer.timerLabel.text = "Game Over";
         Time.timeScale = 0.0f;               
     }
 
