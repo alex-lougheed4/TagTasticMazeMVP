@@ -86,7 +86,7 @@ public class GameNetworkManager : NetworkManager
     public void FixedUpdate(){
         if(gameStarted){
             if (timer.getTimeRemaining() <= 0.0f){ 
-                endGame();
+                //endGame();
                 Debug.Log("Timer Ended");
                 timer.timerIsRunning = false;
                 gameEnded = true;
@@ -97,7 +97,7 @@ public class GameNetworkManager : NetworkManager
 
     }
 
-    [Client]
+    /**[ClientRpc]
     void endGame(){
         Debug.Log("Timer Ended");
         timer.timerIsRunning = false;
@@ -105,6 +105,7 @@ public class GameNetworkManager : NetworkManager
         timer.timerLabel.text = "Game Over"; //not working for client
         Time.timeScale = 0.0f;               
     }
+    **/
 
     public bool getHasGameEnded(){
         return gameEnded;

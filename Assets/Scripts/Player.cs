@@ -2,6 +2,7 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 ///<summary>This class contains all information about the player and is connected to the prefab, this handles player controls, textures etc </summary>
 ///
@@ -29,6 +30,9 @@ public class Player : NetworkBehaviour{
 
     public GameObject mazeLoader;
     bool winnerUploaded = false;
+
+    Timer playerTimer;
+    
 
     private GameNetworkManager room;
         private GameNetworkManager Room
@@ -75,6 +79,7 @@ public class Player : NetworkBehaviour{
     {
         base.OnStartClient();
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
+        playerTimer = GameObject.FindObjectOfType<Timer>();
         username = PlayerPrefs.GetString("username");
         Room.playersList.Add(this);
     }
@@ -117,6 +122,7 @@ public class Player : NetworkBehaviour{
         HandleMovement();
         if(hasAuthority){ //checks if what it's running on has authority ie is the server
             if((Room.getHasGameEnded())&& (!winnerUploaded)){ //checks if the game has ended bool in the room is true
+                endGameForClients();
                foreach (Player p in Room.playersList){
                     if(p.hasTag){
                         pushWinnerToLeaderboaord(p.username); //call leaderboard push function
@@ -129,6 +135,12 @@ public class Player : NetworkBehaviour{
         }
 
     }
+
+    [ClientRpc]
+    void endGameForClients(){
+        playerTimer.timerLabel.text = "Game Over";
+        Time.timeScale = 0.0f; 
+    }   
 
     [Server]
     void pushWinnerToLeaderboaord(string userName){
