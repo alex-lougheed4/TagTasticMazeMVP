@@ -840,9 +840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  width: 10
   size: 1
-  height: 10
   mazeSizeX: 32
   mazeSizeY: 32
   tag: {fileID: 2576651037393470444, guid: bca5b0ffa72755649950071d788f5dbd, type: 3}

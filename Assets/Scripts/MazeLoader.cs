@@ -7,16 +7,9 @@ using Mirror;
 
 public class MazeLoader : NetworkBehaviour
 {
-    [SerializeField]
-    [Range(1,50)]
-    private int width =10;
 
     [SerializeField]
     private float size = 1f;
-
-    [SerializeField]
-    [Range(1,50)]
-    private int height = 10;
 
     [SerializeField]
     [Range(1,200)]//Only allow ranges from 1,200 can be changed
@@ -71,7 +64,8 @@ void createMaze(int oldseed, int newseed)
             for (int i = 0; i < mazeSizeX; i++)
             {
                 var cell = maze[j, i];
-                var position = new Vector3(-15+ i, 0, 15 - j);
+                //var position = new Vector3(-15+ i, 0, 15 - j);
+                var position = new Vector3(-15+ i*size, 0, 15 - j*size);
 
                 if (j == 0)
                 {

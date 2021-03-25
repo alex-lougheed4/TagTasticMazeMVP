@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 325484375148658060}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4, y: 0, z: -4}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -128,15 +128,15 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   untaggedPlayerTextures:
-  - {fileID: 2800000, guid: 40ef51d585404ea498e803b87963b673, type: 3}
-  - {fileID: 2800000, guid: 471e12076fb5c734eab498fe597b40a5, type: 3}
-  - {fileID: 2800000, guid: f19773434195f134b88ff91a56b9eb84, type: 3}
-  - {fileID: 2800000, guid: 6c9a2b2a04acc114c932303ad17adc8a, type: 3}
+  - {fileID: 2800000, guid: ddfe73b7f23a81d499a626e9c980da74, type: 3}
+  - {fileID: 2800000, guid: fc5cae8abb057a64aa3c1422d3cc9b8a, type: 3}
+  - {fileID: 2800000, guid: b8461db9f64473e43859b0ab627af472, type: 3}
+  - {fileID: 2800000, guid: 611d3a17da22210488319bda30b352ea, type: 3}
   taggedPlayerTextures:
-  - {fileID: 2800000, guid: 58418b6babf9e874bbbe83c1d56366d8, type: 3}
-  - {fileID: 2800000, guid: 76e761480d118fa4f9056ca206011573, type: 3}
-  - {fileID: 2800000, guid: a5c2e23a0ba8d564896ff7ec0a33bce1, type: 3}
-  - {fileID: 2800000, guid: 478f3607077d29b48b9c9ec62843a348, type: 3}
+  - {fileID: 2800000, guid: 48a775c80f2f6ba48b071c532a57206c, type: 3}
+  - {fileID: 2800000, guid: 138dad2ed7ee52946be70996e3338480, type: 3}
+  - {fileID: 2800000, guid: dac95848069fccd408ca4baf7e54fa63, type: 3}
+  - {fileID: 2800000, guid: f8ba015dd977f174186fe4d20e5a1c3d, type: 3}
   powerUpImages:
   - {fileID: 21300000, guid: c5bffcc6dede3ae4d8f568cc4e04fab5, type: 3}
   - {fileID: 21300000, guid: f52d04553add78b43b2a39dae8e5b869, type: 3}

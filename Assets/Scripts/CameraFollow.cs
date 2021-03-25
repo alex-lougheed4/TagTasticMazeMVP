@@ -17,7 +17,7 @@ public class CameraFollow : NetworkBehaviour
 
     void Start() //on start
     {
-        offset.y = 15.0f; //set offset
+        offset.y = 8.0f; //set offset
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = PlayerPrefs.GetFloat("volume");
     }
