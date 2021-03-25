@@ -37,6 +37,10 @@ public class Player : NetworkBehaviour{
 
     Timer playerTimer;
     Image playerPowerUpImage;
+
+    GameObject playerRadarIndicator;
+    Vector3 playerRadarIndicatorPos;
+    Vector3 playerRadarIndicatorPosOffset = new Vector3(0,16,0);
     
 
     private GameNetworkManager room;
@@ -80,13 +84,15 @@ public class Player : NetworkBehaviour{
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
     }
 
-    public override void OnStartClient() // is this needed?
+    public override void OnStartClient() 
     {
         base.OnStartClient();
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
         playerPowerUpImage = (Image)GameObject.FindObjectOfType(typeof(Image));
         playerTimer = GameObject.FindObjectOfType<Timer>();
         username = PlayerPrefs.GetString("username");
+        playerRadarIndicator = Instantiate(Resources.Load("Prefabs/playerRadarIndicator")) as GameObject;
+        NetworkServer.Spawn(playerRadarIndicator);
         Room.playersList.Add(this);
     }
     public override void OnStartLocalPlayer()
@@ -139,8 +145,14 @@ public class Player : NetworkBehaviour{
 
     void Update()
 	{
+        playerRadarIndicatorPos = transform.position + playerRadarIndicatorPosOffset;
+        playerRadarIndicator.transform.position = playerRadarIndicatorPos;
         if(isLocalPlayer){
             updatePowerupImage();
+            playerRadarIndicator.GetComponent<Renderer>().material.color = Color.green;
+        }
+        else{
+            playerRadarIndicator.GetComponent<Renderer>().material.color = Color.red;
         }
           
         if (!hasAuthority){
