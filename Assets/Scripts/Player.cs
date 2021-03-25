@@ -221,7 +221,7 @@ public class Player : NetworkBehaviour{
 
     [ClientRpc]
     void wallDestroy(int wallIndex){
-        if (isClientOnly ){
+        if (isClientOnly){ //could be the cause of host wall not destroying 
             Debug.Log(wallIndex);
             Destroy(mazeLoader.GetComponent<MazeLoader>().mazeWalls[wallIndex].gameObject);
             Debug.Log("Client Wall Broken: " + wallIndex);
