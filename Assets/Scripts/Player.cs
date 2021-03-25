@@ -12,8 +12,12 @@ public class Player : NetworkBehaviour{
     public Texture[] untaggedPlayerTextures = null; //list of untagged textures 
     public Texture[] taggedPlayerTextures = null; //list of tagged textures
 
+    public Sprite[] powerUpImages = null;
+
     Texture thisPlayerUntaggedTexture;
     Texture thisPlayerTaggedTexture; 
+
+    Texture thisPowerUpImage;
 
     public float speed; //player's speed multiplier (powerup)
     
@@ -32,6 +36,7 @@ public class Player : NetworkBehaviour{
     bool winnerUploaded = false;
 
     Timer playerTimer;
+    Image playerPowerUpImage;
     
 
     private GameNetworkManager room;
@@ -79,6 +84,7 @@ public class Player : NetworkBehaviour{
     {
         base.OnStartClient();
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
+        playerPowerUpImage = (Image)GameObject.FindObjectOfType(typeof(Image));
         playerTimer = GameObject.FindObjectOfType<Timer>();
         username = PlayerPrefs.GetString("username");
         Room.playersList.Add(this);
@@ -114,8 +120,28 @@ public class Player : NetworkBehaviour{
         }
     }
 
+    [Client]
+    void updatePowerupImage(){
+       if(powerUpType == "speedUp"){
+            playerPowerUpImage.sprite = powerUpImages[0];
+            playerPowerUpImage.gameObject.SetActive(true);
+       }
+       else if(powerUpType == "breakWall"){
+            playerPowerUpImage.sprite = powerUpImages[1];
+            playerPowerUpImage.gameObject.SetActive(true);           
+       }
+       else{
+           playerPowerUpImage.sprite = null;
+           playerPowerUpImage.gameObject.SetActive(false);
+       }
+
+    }
+
     void Update()
 	{
+        if(powerUpType == ""){
+            playerPowerUpImage.gameObject.SetActive(false);
+        }
         if (!hasAuthority){
             return;
         } 
@@ -164,6 +190,11 @@ public class Player : NetworkBehaviour{
             powerUpType = collisionInfo.gameObject.GetComponent<Powerup>().choosePowerUp(); //get access to the type of power up through powerup.choosePowerUp(); and set to string
             Debug.Log(powerUpType);
             NetworkServer.Destroy(collisionInfo.gameObject);
+/**            if(powerUpType == "breakWall"){
+                playerPowerUpImage.sprite = powerUpImages[1];
+                playerPowerUpImage.gameObject.SetActive(true);
+                
+            }**/
             
             
             //thisPlayerHasPowerup = true;

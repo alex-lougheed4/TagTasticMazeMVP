@@ -142,6 +142,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  powerUpImages:
+  - {fileID: 2800000, guid: c5bffcc6dede3ae4d8f568cc4e04fab5, type: 3}
+  - {fileID: 2800000, guid: f52d04553add78b43b2a39dae8e5b869, type: 3}
   possiblePowerupSpawnpoints:
   - {fileID: 0}
   - {fileID: 0}
