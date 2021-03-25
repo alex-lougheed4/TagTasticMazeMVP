@@ -114,8 +114,7 @@ public class GameNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         Debug.Log("Server Started!");
-        Time.timeScale = 0.0f; //start server with time frozen
-        
+        Time.timeScale = 0.0f; //start server with time frozen  
     }
 
     public override void OnStopServer()

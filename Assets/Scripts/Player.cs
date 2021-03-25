@@ -28,7 +28,7 @@ public class Player : NetworkBehaviour{
     float randomPosX; //random spawn position of player in x axis
     float randomPosZ; //random spawn position of player in z axis 
     
-    string powerUpType;
+    [SyncVar] string powerUpType;
 
     string username;
 
@@ -120,7 +120,7 @@ public class Player : NetworkBehaviour{
         }
     }
 
-    [ClientRpc]
+    [Client]
     void updatePowerupImage(){
        if(powerUpType == "speedUp"){
             playerPowerUpImage.sprite = powerUpImages[0];
@@ -139,9 +139,10 @@ public class Player : NetworkBehaviour{
 
     void Update()
 	{
-        if(powerUpType == ""){
-            playerPowerUpImage.gameObject.SetActive(false);
+        if(isLocalPlayer){
+            updatePowerupImage();
         }
+          
         if (!hasAuthority){
             return;
         } 
@@ -187,15 +188,14 @@ public class Player : NetworkBehaviour{
         if(collisionInfo.collider.tag == "powerup")
 		{    
             Debug.Log("Collision with powerup Occured");
-            powerUpType = collisionInfo.gameObject.GetComponent<Powerup>().choosePowerUp(); //get access to the type of power up through powerup.choosePowerUp(); and set to string
+            powerUpType = collisionInfo.gameObject.GetComponent<Powerup>().choosePowerUp();
             Debug.Log(powerUpType);
             NetworkServer.Destroy(collisionInfo.gameObject);
-            updatePowerupImage();
 			return;
         }
-        if((collisionInfo.collider.tag == "WallTag")){  //change HasBreakWallPowerUp to powerUpType == "breakWall"
+        if(collisionInfo.collider.tag == "WallTag"){ 
             Debug.Log("Collided with wall");
-            if(powerUpType == "breakWall"){ //could be constantly touching the wall hence the problem
+            if(powerUpType == "breakWall"){ 
                 Debug.Log("Breaking Wall...");
                 Debug.Log(collisionInfo.collider.gameObject.name);
                 

@@ -13,14 +13,22 @@ public class Powerup : NetworkBehaviour
     
     string[] possiblePowerUps = {"speedUp", "breakWall"};
     //string[] possiblePowerUps = {"breakWall"}; //testing
-    
+
+    [SyncVar] public Vector3 currentPosition = Vector3.zero; 
+ 
     string thisPowerUp;
-
-
+    
+    [Server]
     public void spawnPowerUp(){
         // maybe add if isn't local player
         possiblePowerupSpawnpoints =  new[] {GameObject.Find("powerUpSpawnPoint1"),GameObject.Find("powerUpSpawnPoint2"),GameObject.Find("powerUpSpawnPoint3"),GameObject.Find("powerUpSpawnPoint4")};
         int spawnPositionValue = Random.Range(0,possiblePowerupSpawnpoints.Length);
+        transform.position = possiblePowerupSpawnpoints[spawnPositionValue].transform.position;
+        //clientSpawnPowerUp(possiblePowerupSpawnpoints,spawnPositionValue);
+    }
+
+    [ClientRpc]
+    void clientSpawnPowerUp(GameObject[] possiblePowerupSpawnpoints , int spawnPositionValue){
         transform.position = possiblePowerupSpawnpoints[spawnPositionValue].transform.position;
     }
     

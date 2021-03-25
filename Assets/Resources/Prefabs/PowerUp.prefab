@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8900257204531715497}
   - component: {fileID: 7575017681180842611}
   - component: {fileID: 4417868834930436697}
+  - component: {fileID: 5042871292413071289}
   m_Layer: 0
   m_Name: PowerUp
   m_TagString: powerup
@@ -142,11 +143,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  powerUpImages:
-  - {fileID: 2800000, guid: c5bffcc6dede3ae4d8f568cc4e04fab5, type: 3}
-  - {fileID: 2800000, guid: f52d04553add78b43b2a39dae8e5b869, type: 3}
   possiblePowerupSpawnpoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  currentPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &5042871292413071289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792453938660722779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  localPositionSensitivity: 0.01
+  localRotationSensitivity: 0.01
+  localScaleSensitivity: 0.01
