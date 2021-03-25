@@ -120,7 +120,7 @@ public class Player : NetworkBehaviour{
         }
     }
 
-    [Client]
+    [ClientRpc]
     void updatePowerupImage(){
        if(powerUpType == "speedUp"){
             playerPowerUpImage.sprite = powerUpImages[0];
@@ -190,14 +190,7 @@ public class Player : NetworkBehaviour{
             powerUpType = collisionInfo.gameObject.GetComponent<Powerup>().choosePowerUp(); //get access to the type of power up through powerup.choosePowerUp(); and set to string
             Debug.Log(powerUpType);
             NetworkServer.Destroy(collisionInfo.gameObject);
-/**            if(powerUpType == "breakWall"){
-                playerPowerUpImage.sprite = powerUpImages[1];
-                playerPowerUpImage.gameObject.SetActive(true);
-                
-            }**/
-            
-            
-            //thisPlayerHasPowerup = true;
+            updatePowerupImage();
 			return;
         }
         if((collisionInfo.collider.tag == "WallTag")){  //change HasBreakWallPowerUp to powerUpType == "breakWall"
