@@ -179,10 +179,6 @@ public class Player : NetworkBehaviour{
 
     }
 
-    [ClientRpc]
-    public void setPlayerIndicatorObject(GameObject playerIndicator){
-       playerRadarIndicator = playerIndicator; 
-    }
 
     [ClientRpc]
     void endGameForClients(){
