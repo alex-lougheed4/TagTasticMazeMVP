@@ -38,7 +38,7 @@ public class Player : NetworkBehaviour{
     Timer playerTimer;
     Image playerPowerUpImage;
 
-    GameObject playerRadarIndicator;
+    [SyncVar]public GameObject playerRadarIndicator;
     Vector3 playerRadarIndicatorPos;
     Vector3 playerRadarIndicatorPosOffset = new Vector3(0,16,0);
     
@@ -82,6 +82,7 @@ public class Player : NetworkBehaviour{
     {
         base.OnStartServer();
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
+        Room.playersList.Add(this);
     }
 
     public override void OnStartClient() 
@@ -91,8 +92,8 @@ public class Player : NetworkBehaviour{
         playerPowerUpImage = (Image)GameObject.FindObjectOfType(typeof(Image));
         playerTimer = GameObject.FindObjectOfType<Timer>();
         username = PlayerPrefs.GetString("username");
-        playerRadarIndicator = Instantiate(Resources.Load("Prefabs/playerRadarIndicator")) as GameObject;
-        NetworkServer.Spawn(playerRadarIndicator);
+        //playerRadarIndicator = Instantiate(Resources.Load("Prefabs/playerRadarIndicator")) as GameObject;
+        //NetworkServer.Spawn(playerRadarIndicator);
         Room.playersList.Add(this);
     }
     public override void OnStartLocalPlayer()
@@ -145,14 +146,17 @@ public class Player : NetworkBehaviour{
 
     void Update()
 	{
-        playerRadarIndicatorPos = transform.position + playerRadarIndicatorPosOffset;
-        playerRadarIndicator.transform.position = playerRadarIndicatorPos;
-        if(isLocalPlayer){
-            updatePowerupImage();
-            playerRadarIndicator.GetComponent<Renderer>().material.color = Color.green;
-        }
-        else{
-            playerRadarIndicator.GetComponent<Renderer>().material.color = Color.red;
+        if(playerRadarIndicator != null){
+            playerRadarIndicatorPos = transform.position + playerRadarIndicatorPosOffset;
+            playerRadarIndicator.transform.position = playerRadarIndicatorPos;
+        
+            if(isLocalPlayer){
+                updatePowerupImage();
+                playerRadarIndicator.GetComponent<Renderer>().material.color = Color.green;
+            }
+            else{
+                playerRadarIndicator.GetComponent<Renderer>().material.color = Color.red;
+            }
         }
           
         if (!hasAuthority){
@@ -173,6 +177,11 @@ public class Player : NetworkBehaviour{
             
         }
 
+    }
+
+    [ClientRpc]
+    public void setPlayerIndicatorObject(GameObject playerIndicator){
+       playerRadarIndicator = playerIndicator; 
     }
 
     [ClientRpc]
@@ -247,5 +256,3 @@ public class Player : NetworkBehaviour{
 			justTagged = false;
 	}
 }
-
-

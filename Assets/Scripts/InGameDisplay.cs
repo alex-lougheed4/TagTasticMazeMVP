@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class InGameDisplay : MonoBehaviour
+public class InGameDisplay : NetworkBehaviour
 {
     public GameObject confirmPanel;
     // Start is called before the first frame update
@@ -21,6 +22,13 @@ public class InGameDisplay : MonoBehaviour
     }
 
         public void confirmQuitButton(){
-            Application.Quit();
+            if(isServer){
+                NetworkManager.singleton.StopHost();
+            } 
+            else{
+                NetworkManager.singleton.StopClient();
+            }
+            NetworkManager.singleton.ServerChangeScene("GUIScene");
+            //Application.Quit();
     }
 }

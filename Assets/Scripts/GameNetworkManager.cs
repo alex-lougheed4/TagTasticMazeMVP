@@ -39,6 +39,7 @@ public class GameNetworkManager : NetworkManager
         Debug.Log("player added to server");
         GameObject player;
         GameObject powerUp;
+        GameObject playerRadarIndicator;
         
         
 
@@ -65,7 +66,14 @@ public class GameNetworkManager : NetworkManager
             powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
             NetworkServer.Spawn(powerUp);
             powerUp.GetComponent<Powerup>().spawnPowerUp();
-            Debug.Log("PowerUpSpawned");
+            Debug.Log("PowerUpSpawned"); //for each connecttion, instantiate playerIndicator and spawn, attach to player
+
+            foreach (Player p in playersList){
+                playerRadarIndicator = Instantiate(Resources.Load("Prefabs/playerRadarIndicator")) as GameObject;
+                NetworkServer.Spawn(playerRadarIndicator);
+                p.playerRadarIndicator = playerRadarIndicator;
+                //p.setPlayerIndicatorObject(playerRadarIndicator);
+            }
 
 
             gameStarted = true;
