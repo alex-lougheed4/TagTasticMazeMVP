@@ -43,7 +43,7 @@ public class MenuNetworkScript : NetworkBehaviour
     }
 
     public void StartButton(){ //called when start game is clicked
-        baseServerAddress = "localhost";//insert the ip for the main server here
+        baseServerAddress = "ec2-3-16-125-214.us-east-2.compute.amazonaws.com";//insert the ip for the main server here
         manager.networkAddress = baseServerAddress;
         manager.StartClient();
         setUsername();
