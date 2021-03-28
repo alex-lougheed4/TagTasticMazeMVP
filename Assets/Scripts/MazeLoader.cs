@@ -52,6 +52,7 @@ void createMaze(int oldseed, int newseed)
         tag = Instantiate(Resources.Load("Prefabs/Tag")) as GameObject; //instantiates (creates) tag
         NetworkServer.Spawn(tag); //spawns the tag
         tag.GetComponent<TagSpawn>().spawnTag(); //randomises the tag's position
+        Debug.Log("Maze and tag spawned");
     }
 
 
