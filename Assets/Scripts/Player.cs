@@ -95,6 +95,7 @@ public class Player : NetworkBehaviour{
         //playerRadarIndicator = Instantiate(Resources.Load("Prefabs/playerRadarIndicator")) as GameObject;
         //NetworkServer.Spawn(playerRadarIndicator);
         Room.playersList.Add(this);
+        updatePowerupImage();
     }
     public override void OnStartLocalPlayer()
     {
