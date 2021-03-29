@@ -22,18 +22,16 @@ public class Player : NetworkBehaviour{
     [SyncVar] public float speed = 0.0f; //player's speed multiplier (powerup)
     
 	[SyncVar(hook = nameof(OnTagChanged))] //synced value to affect  OnTagChanged when changed
-    bool hasTag = false; //boolean of if the player has the tag
+    public bool hasTag = false; //boolean of if the player has the tag
 
     bool justTagged; //boolean value of if the player was just tagged
-    float randomPosX; //random spawn position of player in x axis
-    float randomPosZ; //random spawn position of player in z axis 
     
     [SyncVar] string powerUpType;
 
-    string username;
+    [SyncVar] public string username;
 
     public GameObject mazeLoader;
-    bool winnerUploaded = false;
+    public bool winnerUploaded = false;
 
     Timer playerTimer;
     Image playerPowerUpImage;
@@ -100,19 +98,10 @@ public class Player : NetworkBehaviour{
     public override void OnStartLocalPlayer()
     {
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
-        generateRandomPositions();
-        if((randomPosX != 0) || (randomPosZ != 0)){
-            transform.position = new Vector3(randomPosX,0,randomPosZ);
-        }
-
         Camera.main.GetComponent<CameraFollow>().target=transform; //Fix camera on "me"
         Debug.Log(speed);
     }
 
-    public void generateRandomPositions(){
-        randomPosX = (float)Random.Range(-15f, 15f);
-        randomPosZ = (float)Random.Range(-15f, 15f);
-    }
 
     void HandleMovement()
 	{
@@ -161,8 +150,10 @@ public class Player : NetworkBehaviour{
             return;
         } 
         HandleMovement();
-        if(hasAuthority){ //checks if what it's running on has authority ie is the server
+        /**if(hasAuthority){ //checks if what it's running on has authority ie is the server
+            Debug.Log("If is Server");
             if((Room.getHasGameEnded())&& (!winnerUploaded)){ //checks if the game has ended bool in the room is true
+                Debug.Log("Game ended, push to clients");
                 endGameForClients();
                foreach (Player p in Room.playersList){
                     if(p.hasTag){
@@ -172,20 +163,20 @@ public class Player : NetworkBehaviour{
                     }
                 }
             }
-            
-        }
+        
+        }**/
 
     }
 
 
     [ClientRpc]
-    void endGameForClients(){
+    public void endGameForClients(){
         playerTimer.timerLabel.text = "Game Over";
         Time.timeScale = 0.0f; 
     }
 
     [Server]
-    void pushWinnerToLeaderboaord(string userName){
+    public void pushWinnerToLeaderboaord(string userName){
         FindObjectOfType<LeaderboardScript>().UploadWinner(userName);
     }
 

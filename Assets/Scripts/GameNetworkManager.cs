@@ -18,6 +18,8 @@ public class GameNetworkManager : NetworkManager
 
     public int maxPlayers;
     int playerMaterialIndex;
+    float randomPosX; //random spawn position of player in x axis
+    float randomPosZ; //random spawn position of player in z axis 
 
     int mazeSeed;
     public GameObject MazeLoader;
@@ -48,6 +50,10 @@ public class GameNetworkManager : NetworkManager
             totalPlayers++; 
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
             player.GetComponent<Player>().setTextureValue(totalPlayers);
+            generateRandomPositions();
+            if((randomPosX != 0) || (randomPosZ != 0)){
+            player.transform.position = new Vector3(randomPosX,0,randomPosZ);
+            }
             NetworkServer.AddPlayerForConnection(conn,player);
             
         }
@@ -89,10 +95,22 @@ public class GameNetworkManager : NetworkManager
                 timer.timerIsRunning = false;
                 gameEnded = true;
                 timer.timerLabel.text = "Game Over";
+                foreach (Player p in playersList){
+                    p.endGameForClients();
+                    if (p.hasTag){
+                        p.pushWinnerToLeaderboaord(p.username); //call leaderboard push function
+                        Debug.Log("winner's username: " + p.username);
+                        p.winnerUploaded = true;
+                    }
+                }
                 Time.timeScale = 0.0f; //freeze time after gameover
             }
         }
 
+    }
+    public void generateRandomPositions(){
+        randomPosX = (float)Random.Range(-15f, 15f);
+        randomPosZ = (float)Random.Range(-15f, 15f);
     }
 
     public bool getHasGameEnded(){
