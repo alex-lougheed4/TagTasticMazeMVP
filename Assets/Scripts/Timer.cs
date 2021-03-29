@@ -38,17 +38,12 @@ public class Timer : NetworkBehaviour
     {
         while (countDownTimeRemaining > 0)
         {
-            //DO YOUR STUFF HERE EVERY SECOND
-            //Because this coroutine is started from the server, this will only run on the server and change
-            //the value of countDownTimeRemaining. By changing this value on the server -> the hook OnTimeRemainingValueChange 
-            //will be called
             countDownTimeRemaining--;
             yield return new WaitForSeconds(1f);
         }
     }
 
-    //Removed the ClientRPC here because we call this method with our hook, which will be called on ALL our clients, therefor 
-    //no CLIENTRPC is needed
+
     void DisplayTime()
     {
         float minutes = Mathf.FloorToInt(countDownTimeRemaining / 60);

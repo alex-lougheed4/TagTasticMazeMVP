@@ -29,6 +29,5 @@ public class InGameDisplay : NetworkBehaviour
                 NetworkManager.singleton.StopClient();
             }
             NetworkManager.singleton.ServerChangeScene("GUIScene");
-            //Application.Quit();
     }
 }

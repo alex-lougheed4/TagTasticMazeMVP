@@ -47,18 +47,9 @@ public class GameNetworkManager : NetworkManager
         {   
             totalPlayers++; 
             player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-            //player.name += totalPlayers;
-            //Texture s = Resources.Load<Texture>("playerTextures/Player"+ totalPlayers + "_untagged");
             player.GetComponent<Player>().setTextureValue(totalPlayers);
             NetworkServer.AddPlayerForConnection(conn,player);
             
-
-            /**
-            powerUp = Instantiate(Resources.Load("Prefabs/PowerUp")) as GameObject;
-            NetworkServer.Spawn(powerUp);
-            powerUp.GetComponent<Powerup>().spawnPowerUp();
-            Debug.Log("PowerUpSpawned");
-            **/
         }
 
         if(totalPlayers == maxPlayers){ 
@@ -72,7 +63,7 @@ public class GameNetworkManager : NetworkManager
                 playerRadarIndicator = Instantiate(Resources.Load("Prefabs/playerRadarIndicator")) as GameObject;
                 NetworkServer.Spawn(playerRadarIndicator);
                 p.playerRadarIndicator = playerRadarIndicator;
-                
+                p.speed = 0.01f;  
             }
 
 
@@ -94,7 +85,6 @@ public class GameNetworkManager : NetworkManager
     public void FixedUpdate(){
         if(gameStarted){
             if (timer.getTimeRemaining() <= 0.0f){ 
-                //endGame();
                 Debug.Log("Timer Ended");
                 timer.timerIsRunning = false;
                 gameEnded = true;
@@ -104,16 +94,6 @@ public class GameNetworkManager : NetworkManager
         }
 
     }
-
-    /**[ClientRpc]
-    void endGame(){
-        Debug.Log("Timer Ended");
-        timer.timerIsRunning = false;
-        gameEnded = true;
-        timer.timerLabel.text = "Game Over"; //not working for client
-        Time.timeScale = 0.0f;               
-    }
-    **/
 
     public bool getHasGameEnded(){
         return gameEnded;

@@ -19,7 +19,7 @@ public class Player : NetworkBehaviour{
 
     Texture thisPowerUpImage;
 
-    public float speed; //player's speed multiplier (powerup)
+    [SyncVar] public float speed; //player's speed multiplier (powerup)
     
 	[SyncVar(hook = nameof(OnTagChanged))] //synced value to affect  OnTagChanged when changed
     bool hasTag = false; //boolean of if the player has the tag
@@ -89,13 +89,12 @@ public class Player : NetworkBehaviour{
     {
         base.OnStartClient();
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
-        playerPowerUpImage = (Image)GameObject.FindObjectOfType(typeof(Image));
+        playerPowerUpImage = (Image)GameObject.Find("/Canvas/PowerUpImage").GetComponent<Image>();
         playerTimer = GameObject.FindObjectOfType<Timer>();
         username = PlayerPrefs.GetString("username");
-        //playerRadarIndicator = Instantiate(Resources.Load("Prefabs/playerRadarIndicator")) as GameObject;
-        //NetworkServer.Spawn(playerRadarIndicator);
         Room.playersList.Add(this);
         updatePowerupImage();
+        speed = 0.00f;
     }
     public override void OnStartLocalPlayer()
     {
@@ -185,7 +184,10 @@ public class Player : NetworkBehaviour{
     void endGameForClients(){
         playerTimer.timerLabel.text = "Game Over";
         Time.timeScale = 0.0f; 
-    }   
+    }
+
+ 
+
 
     [Server]
     void pushWinnerToLeaderboaord(string userName){

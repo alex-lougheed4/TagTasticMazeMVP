@@ -20,11 +20,9 @@ public class Powerup : NetworkBehaviour
     
     [Server]
     public void spawnPowerUp(){
-        // maybe add if isn't local player
         possiblePowerupSpawnpoints =  new[] {GameObject.Find("powerUpSpawnPoint1"),GameObject.Find("powerUpSpawnPoint2"),GameObject.Find("powerUpSpawnPoint3"),GameObject.Find("powerUpSpawnPoint4")};
         int spawnPositionValue = Random.Range(0,possiblePowerupSpawnpoints.Length);
         transform.position = possiblePowerupSpawnpoints[spawnPositionValue].transform.position;
-        //clientSpawnPowerUp(possiblePowerupSpawnpoints,spawnPositionValue);
     }
 
     [ClientRpc]

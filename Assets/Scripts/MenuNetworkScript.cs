@@ -18,7 +18,6 @@ public class MenuNetworkScript : NetworkBehaviour
     public GameObject ipInputField;
     public GameObject usernameInputField;
     NetworkManager manager;
-    //NetworkManager manager => GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
     
     string baseServerAddress;
     string address;
