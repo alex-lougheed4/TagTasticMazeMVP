@@ -173,9 +173,11 @@ public class Player : NetworkBehaviour{
     public void endGameForClients(){
         playerTimer.timerLabel.text = "Game Over";
         Time.timeScale = 0.0f; 
+        if(hasTag){
+            pushWinnerToLeaderboaord(username);
+        }
     }
 
-    [Server]
     public void pushWinnerToLeaderboaord(string userName){
         FindObjectOfType<LeaderboardScript>().UploadWinner(userName);
     }

@@ -5214,7 +5214,7 @@ MonoBehaviour:
   - {fileID: 6127186250970535222, guid: 9e9de336645c3784fa35eccbe08d651b, type: 3}
   timer: {fileID: 0}
   totalPlayers: 0
-  maxPlayers: 2
+  maxPlayers: 4
   MazeLoader: {fileID: 0}
 --- !u!114 &1850244781
 MonoBehaviour:
