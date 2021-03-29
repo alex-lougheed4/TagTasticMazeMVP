@@ -19,7 +19,7 @@ public class Player : NetworkBehaviour{
 
     Texture thisPowerUpImage;
 
-    [SyncVar] public float speed; //player's speed multiplier (powerup)
+    [SyncVar] public float speed = 0.0f; //player's speed multiplier (powerup)
     
 	[SyncVar(hook = nameof(OnTagChanged))] //synced value to affect  OnTagChanged when changed
     bool hasTag = false; //boolean of if the player has the tag
@@ -95,7 +95,7 @@ public class Player : NetworkBehaviour{
         username = PlayerPrefs.GetString("username");
         Room.playersList.Add(this);
         updatePowerupImage();
-        speed = 0.00f;
+        //speed = 0.00f;
     }
     public override void OnStartLocalPlayer()
     {
@@ -116,10 +116,7 @@ public class Player : NetworkBehaviour{
 
     void HandleMovement()
 	{
-        if(isLocalPlayer)
-		{   if(powerUpType == "speedUp"){
-            speed = 0.015f;
-        }
+        if(isLocalPlayer){
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
             Vector3 movement = new Vector3(moveHorizontal * speed,0, moveVertical * speed);
@@ -187,9 +184,6 @@ public class Player : NetworkBehaviour{
         Time.timeScale = 0.0f; 
     }
 
- 
-
-
     [Server]
     void pushWinnerToLeaderboaord(string userName){
         FindObjectOfType<LeaderboardScript>().UploadWinner(userName);
@@ -212,6 +206,9 @@ public class Player : NetworkBehaviour{
             powerUpType = collisionInfo.gameObject.GetComponent<Powerup>().choosePowerUp();
             Debug.Log(powerUpType);
             NetworkServer.Destroy(collisionInfo.gameObject);
+            if(powerUpType == "speedUp"){
+                speed = 0.015f;
+            }
 			return;
         }
         if(collisionInfo.collider.tag == "WallTag"){ 

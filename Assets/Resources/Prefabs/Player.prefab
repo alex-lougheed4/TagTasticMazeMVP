@@ -140,7 +140,7 @@ MonoBehaviour:
   powerUpImages:
   - {fileID: 21300000, guid: c5bffcc6dede3ae4d8f568cc4e04fab5, type: 3}
   - {fileID: 21300000, guid: f52d04553add78b43b2a39dae8e5b869, type: 3}
-  speed: 0.01
+  speed: 0
   mazeLoader: {fileID: 0}
   playerRadarIndicator: {fileID: 0}
 --- !u!114 &7941598322841823472

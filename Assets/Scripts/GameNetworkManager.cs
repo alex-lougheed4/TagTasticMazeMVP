@@ -99,6 +99,10 @@ public class GameNetworkManager : NetworkManager
         return gameEnded;
     }
 
+    public bool getHasGameStarted(){
+        return gameStarted;
+    }
+
     public override void OnStartServer()
     {
         Debug.Log("Server Started!");
