@@ -88,8 +88,9 @@ public class Player : NetworkBehaviour{
     public override void OnStartClient() 
     {
         base.OnStartClient();
+        this.enabled = true;
         mazeLoader = FindObjectOfType<MazeLoader>().gameObject;
-        playerPowerUpImage = (Image)GameObject.Find("/Canvas/PowerUpImage").GetComponent<Image>();
+        playerPowerUpImage = (Image)GameObject.FindObjectOfType<GameCanvasScript>().powerUpImage;
         playerTimer = GameObject.FindObjectOfType<Timer>();
         username = PlayerPrefs.GetString("username");
         Room.playersList.Add(this);
